@@ -106,4 +106,16 @@
   <data name="welcome" xml:space="preserve">
     <value>Witaj w twojej nowej aplikacji</value>
   </data>
+  <data name="SimulatedAnnealing.SinXOptimization" xml:space="preserve">
+    <value>Znajdowanie minimum Sin(x)</value>
+  </data>
+  <data name="SimulatedAnnealing.StartEncourage" xml:space="preserve">
+    <value>Kliknij powyższy przycisk start, aby rozpocząć symulację w czasie rzeczywistym.</value>
+  </data>
+  <data name="SimulatedAnnealing.CurrentBestSolution" xml:space="preserve">
+    <value>Bieżące rozwiązanie (wartość x): {0}</value>
+  </data>
+  <data name="SimulatedAnnealing.CurrentBestResult" xml:space="preserve">
+    <value>Wartość bieżącego rozwiązania (wartość y): {0}</value>
+  </data>
 </root>

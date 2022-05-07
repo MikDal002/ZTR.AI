@@ -1,4 +1,52 @@
 ﻿@page "/SimulatedAnnealing"
 
-<PageTitle>Symulowane wyrzażanie</PageTitle>
+@inject IStringLocalizer<Resource> localizer;
 
+<PageTitle>@localizer["SimulatedAnnealing"]</PageTitle>
+
+<h2>Things to do: </h2>
+<ul>
+    <li>
+        TODO: Math input to provide your own function to optimise
+    </li>
+    <li>
+        TODO: Chart which shows te function and next steps.
+    </li>
+    <li>
+        TODO: Possibility to show travelsman's problem.
+    </li>
+</ul>
+
+<h1>@localizer["SimulatedAnnealing.SinXOptimization"] <RadzenButton Text="Start" Click="StartSimulatedAnnealing" /> </h1>
+
+@localizer["SimulatedAnnealing.StartEncourage"]
+
+<RadzenChart>
+    <RadzenLineSeries Data="@SinData" CategoryProperty="X" ValueProperty="Y">
+        <RadzenChartTooltipOptions Visible="false" />
+    </RadzenLineSeries>
+    <RadzenLegend Visible="false" />
+</RadzenChart>
+
+@string.Format(localizer["SimulatedAnnealing.CurrentBestSolution"], CurrentSolution) <br />
+@string.Format(localizer["SimulatedAnnealing.CurrentBestResult"], CurrentResult)
+
+@if (History.Any())
+{
+    <table>
+        <thead>
+        <th>Step</th>
+        <th>X parameter</th>
+        <th>Value</th>
+        </thead>
+        
+        @foreach (var hist in History)
+        {
+            <tr>
+                <td>@hist.Step</td>
+                <td>@hist.X.ToString("F5")</td>
+                <td>@hist.Value.ToString("F5")</td>
+            </tr>
+        }
+    </table>
+}

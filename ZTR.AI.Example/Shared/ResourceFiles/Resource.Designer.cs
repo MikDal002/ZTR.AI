@@ -79,6 +79,42 @@ namespace ZTR.AI.Example.Shared.ResourceFiles {
         }
         
         /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Value of best solution (y value): {0}.
+        /// </summary>
+        public static string SimulatedAnnealing_CurrentBestResult {
+            get {
+                return ResourceManager.GetString("SimulatedAnnealing.CurrentBestResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Current best solution (x value): {0}.
+        /// </summary>
+        public static string SimulatedAnnealing_CurrentBestSolution {
+            get {
+                return ResourceManager.GetString("SimulatedAnnealing.CurrentBestSolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Finding Sin(x) minimum.
+        /// </summary>
+        public static string SimulatedAnnealing_SinXOptimization {
+            get {
+                return ResourceManager.GetString("SimulatedAnnealing.SinXOptimization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Click above start button to begin the simulaiton in real time..
+        /// </summary>
+        public static string SimulatedAnnealing_StartEncourage {
+            get {
+                return ResourceManager.GetString("SimulatedAnnealing.StartEncourage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Wyszukuje zlokalizowany ciąg podobny do ciągu Welcome to your new app.
         /// </summary>
         public static string welcome {

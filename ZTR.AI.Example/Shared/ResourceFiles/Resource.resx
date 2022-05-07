@@ -126,4 +126,16 @@
   <data name="welcome" xml:space="preserve">
     <value>Welcome to your new app</value>
   </data>
+  <data name="SimulatedAnnealing.SinXOptimization" xml:space="preserve">
+    <value>Finding Sin(x) minimum</value>
+  </data>
+  <data name="SimulatedAnnealing.StartEncourage" xml:space="preserve">
+    <value>Click above start button to begin the simulaiton in real time.</value>
+  </data>
+  <data name="SimulatedAnnealing.CurrentBestSolution" xml:space="preserve">
+    <value>Current best solution (x value): {0}</value>
+  </data>
+  <data name="SimulatedAnnealing.CurrentBestResult" xml:space="preserve">
+    <value>Value of best solution (y value): {0}</value>
+  </data>
 </root>
