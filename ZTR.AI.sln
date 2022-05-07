@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32427.441
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZTR.AI.SimulatedAnnealing", "ZTR.AI.SimulatedAnnealing", "{CB5FD7B6-A8C5-418E-8B58-751620C0A129}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZTR.AI.SimulatedAnnealing.Core", "ZTR.AI.SimulatedAnnealing\ZTR.AI.SimulatedAnnealing.Core\ZTR.AI.SimulatedAnnealing.Core.csproj", "{741D693B-E3DF-419F-800A-0DA0EF0960E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZTR.AI.SimulatedAnnealing.Core.Tests", "ZTR.AI.SimulatedAnnealing\ZTR.AI.SimulatedAnnealing.Core.Tests\ZTR.AI.SimulatedAnnealing.Core.Tests.csproj", "{05C017A5-D3FC-4612-9025-226BFB551305}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZTR.AI.Common", "ZTR.AI.Common", "{E5EAFEB5-5860-4F86-A213-B00CBAC21BF7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZTR.AI.Common.Core", "ZTR.AI.Common\ZTR.AI.Common.Core\ZTR.AI.Common.Core.csproj", "{7662A6BA-32BE-42F8-A94A-64CA55D66FFB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZTR.AI.Common.Core.Tests", "ZTR.AI.Common\ZTR.AI.Common.Core.Tests\ZTR.AI.Common.Core.Tests.csproj", "{9FD066CF-950E-444B-99F5-ABD231AFC3CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{741D693B-E3DF-419F-800A-0DA0EF0960E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{741D693B-E3DF-419F-800A-0DA0EF0960E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{741D693B-E3DF-419F-800A-0DA0EF0960E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{741D693B-E3DF-419F-800A-0DA0EF0960E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05C017A5-D3FC-4612-9025-226BFB551305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05C017A5-D3FC-4612-9025-226BFB551305}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05C017A5-D3FC-4612-9025-226BFB551305}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05C017A5-D3FC-4612-9025-226BFB551305}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7662A6BA-32BE-42F8-A94A-64CA55D66FFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7662A6BA-32BE-42F8-A94A-64CA55D66FFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7662A6BA-32BE-42F8-A94A-64CA55D66FFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7662A6BA-32BE-42F8-A94A-64CA55D66FFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FD066CF-950E-444B-99F5-ABD231AFC3CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FD066CF-950E-444B-99F5-ABD231AFC3CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FD066CF-950E-444B-99F5-ABD231AFC3CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FD066CF-950E-444B-99F5-ABD231AFC3CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{741D693B-E3DF-419F-800A-0DA0EF0960E3} = {CB5FD7B6-A8C5-418E-8B58-751620C0A129}
+		{05C017A5-D3FC-4612-9025-226BFB551305} = {CB5FD7B6-A8C5-418E-8B58-751620C0A129}
+		{7662A6BA-32BE-42F8-A94A-64CA55D66FFB} = {E5EAFEB5-5860-4F86-A213-B00CBAC21BF7}
+		{9FD066CF-950E-444B-99F5-ABD231AFC3CB} = {E5EAFEB5-5860-4F86-A213-B00CBAC21BF7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6FF48C4C-AD55-4540-9CA8-E972ADC601DB}
+	EndGlobalSection
+EndGlobal
