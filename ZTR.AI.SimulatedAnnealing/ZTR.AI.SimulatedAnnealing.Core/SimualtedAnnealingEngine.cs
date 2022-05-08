@@ -38,7 +38,7 @@ public class SimualatedAnnealingEngine
     public Func<double, double> TemperatureDecreaser { get; }
     public bool IsFinished { get; private set; }
     public double Result { get; private set; } = double.PositiveInfinity;
-
+    private int _inTemepratureValue = 0;
     public void NextStep()
     {
         if (WorkingTemperature <= 0.0 || IsFinished)
@@ -49,26 +49,31 @@ public class SimualatedAnnealingEngine
 
         // TODO: TO jest chłodzenie schodkowe, tak, że każda z temperatur jest utrzymywana przez pewną chwilę.
         //       Niemniej, użytkownik powinien mieć możliwość wyboru schładzania wykładniczego oraz piłowatego (jak piła) i innych.
-        for (int i = 0; i < StartingTemperature / WorkingTemperature; i++)
+        double proposedPosition = GenerateNewPositionSomewhereNearToCurrentSolution();
+
+        var proposedResult = _functionToOptimize(proposedPosition);
+        if (proposedResult <= Result)
         {
-            double proposedPosition = GenerateNewPositionSomewhereNearToCurrentSolution();
-
-            var proposedResult = _functionToOptimize(proposedPosition);
-            if (proposedResult <= Result)
-            {
-                SetNewResult(proposedResult, proposedPosition);
-            }
-            else
-            {
-                var probabilityToTake = _random.NextDouble();
-                var maxProbability = Math.Exp((Result - proposedResult) / WorkingTemperature);
-
-                if (probabilityToTake < maxProbability) SetNewResult(proposedResult, proposedPosition);
-            }
+            SetNewResult(proposedResult, proposedPosition);
         }
+        else
+        {
+            var probabilityToTake = _random.NextDouble();
+            var maxProbability = Math.Exp((Result - proposedResult) / WorkingTemperature);
 
-        WorkingTemperature = TemperatureDecreaser(WorkingTemperature);
-        if (WorkingTemperature <= EndingTemperature) IsFinished = true;
+            if (probabilityToTake < maxProbability) SetNewResult(proposedResult, proposedPosition);
+        }
+        
+        if (_inTemepratureValue > StartingTemperature / WorkingTemperature)
+        {
+            WorkingTemperature = TemperatureDecreaser(WorkingTemperature);
+            if (WorkingTemperature <= EndingTemperature) IsFinished = true;
+            _inTemepratureValue = 0;
+        }
+        else
+        {
+            _inTemepratureValue++;
+        }
     }
 
     private double GenerateNewPositionSomewhereNearToCurrentSolution()
