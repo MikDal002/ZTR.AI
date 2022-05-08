@@ -133,7 +133,7 @@ namespace ZTR.AI.Example.Shared.ResourceFiles {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Finding Sin(x) minimum.
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Finding function minimum.
         /// </summary>
         public static string SimulatedAnnealing_SinXOptimization {
             get {

@@ -127,7 +127,7 @@
     <value>Welcome to your new app</value>
   </data>
   <data name="SimulatedAnnealing.SinXOptimization" xml:space="preserve">
-    <value>Finding Sin(x) minimum</value>
+    <value>Finding function minimum</value>
   </data>
   <data name="SimulatedAnnealing.StartEncourage" xml:space="preserve">
     <value>Click above start button to begin the simulaiton in real time.</value>
