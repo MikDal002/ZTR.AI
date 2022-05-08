@@ -138,4 +138,22 @@
   <data name="SimulatedAnnealing.CurrentBestResult" xml:space="preserve">
     <value>Value of best solution (y value): {0}</value>
   </data>
+  <data name="Common.Calculating" xml:space="preserve">
+    <value>Calculating...</value>
+  </data>
+  <data name="SimulatedAnnealing.BestResult" xml:space="preserve">
+    <value>Best result after {0} iteration:</value>
+  </data>
+  <data name="SimulatedAnnealing.CurrentResult" xml:space="preserve">
+    <value>Result after {0} iteration:</value>
+  </data>
+  <data name="SimulatedAnnealing.XParameter" xml:space="preserve">
+    <value>X parameter</value>
+  </data>
+  <data name="SimulatedAnnealing.StepNo" xml:space="preserve">
+    <value>Iteration</value>
+  </data>
+  <data name="SimulatedAnnealing.IterationValue" xml:space="preserve">
+    <value>Value</value>
+  </data>
 </root>

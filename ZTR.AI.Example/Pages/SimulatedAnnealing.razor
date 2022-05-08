@@ -1,77 +1,93 @@
 ﻿@page "/SimulatedAnnealing"
+@using System.Runtime.InteropServices
 
 @inject IStringLocalizer<Resource> localizer;
 
 <PageTitle>@localizer["SimulatedAnnealing"]</PageTitle>
 
-<h2>Things to do: </h2>
-<ul>
-    <li>
-        TODO: Math input to provide your own function to optimise
-    </li>
-    <li>
-        TODO: Chart which shows te function and next steps.
-    </li>
-    <li>
-        TODO: Possibility to show travelsman's problem.
-    </li>
-</ul>
+<div class="row">
+    <h2>Things to do: </h2>
+    <ul>
+        <li>
+            TODO: Math input to provide your own function to optimise
+        </li>
+        <li>
+            TODO: Chart which shows te function and next steps.
+        </li>
+        <li>
+            TODO: Possibility to show travelsman's problem.
+        </li>
+    </ul>
+</div>
 
-<h1>@localizer["SimulatedAnnealing.SinXOptimization"] <RadzenButton Text="Start" Click="StartSimulatedAnnealing" /> </h1>
+<div class="row">
+    <h1>@localizer["SimulatedAnnealing.SinXOptimization"] <RadzenButton Text="Start" Click="StartSimulatedAnnealing" /> </h1>
 
-@localizer["SimulatedAnnealing.StartEncourage"]
+    @localizer["SimulatedAnnealing.StartEncourage"]
 
-<RadzenChart>
-    <RadzenLineSeries Data="@SinData" CategoryProperty="X" ValueProperty="Y">
-        <RadzenChartTooltipOptions Visible="false" />
-    </RadzenLineSeries>
-    <RadzenLegend Visible="false" />
-</RadzenChart>
+    <RadzenChart>
+        <RadzenLineSeries Data="@SinData" CategoryProperty="X" ValueProperty="Y">
+            <RadzenChartTooltipOptions Visible="false" />
+        </RadzenLineSeries>
+        <RadzenLegend Visible="false" />
+    </RadzenChart>
 
-@if (History.Any()) 
+</div>
+
+@if (History.Any())
 {
-    <div class="card mb-3">
-        <div class="card-header">
-            <h5 class="card-title">
-                @if (!IsRunning)
-                {
-                    <span>Najlepszy</span>
-                }
-                wnik po iteracji @CurrentIteration
-            </h5>
+    <div class="row">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">
+                    @if (!IsRunning)
+                    {
+                        @string.Format(localizer["SimulatedAnnealing.BestResult"], CurrentIteration)
+                    }
+                    else
+                    {
+                        @string.Format(localizer["SimulatedAnnealing.CurrentResult"], CurrentIteration)
+                    }
+                </h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    @string.Format(localizer["SimulatedAnnealing.CurrentBestSolution"], CurrentSolution) <br />
+                </li>
+                <li class="list-group-item">
+                    @string.Format(localizer["SimulatedAnnealing.CurrentBestResult"], CurrentResult)
+                </li>
+            </ul>
+
         </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                @string.Format(localizer["SimulatedAnnealing.CurrentBestSolution"], CurrentSolution) <br />
-            </li>
-            <li class="list-group-item">
-                @string.Format(localizer["SimulatedAnnealing.CurrentBestResult"], CurrentResult)
-            </li>
-        </ul>
     </div>
 
     @if (IsRunning)
     {
         <div class="progress p-2 m-2">
             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 75%">Obliczanie...</div>
+         aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 75%">
+                @localizer["SimulatedAnnealing.CurrentBestResult"]
+            </div>
         </div>
     }
+    <div class="row flex-grow-1 overflow-auto vh-75">
 
-    <table class="table table-hover table-sm">
-        <thead>
-        <th scope="col">Step</th>
-        <th scope="col">X parameter</th>
-        <th scope="col">Value</th>
-        </thead>
+        <table class="table table-hover table-sm overflow-auto">
+            <thead>
+            <th scope="col">@localizer["SimulatedAnnealing.StepNo"]</th>
+            <th scope="col">@localizer["SimulatedAnnealing.XParameter"]</th>
+            <th scope="col">@localizer["SimulatedAnnealing.IterationValue"]</th>
+            </thead>
 
-        @foreach (var hist in History)
-        {
-            <tr>
-                <td>@hist.Step</td>
-                <td>@hist.X.ToString("F5")</td>
-                <td>@hist.Value.ToString("F5")</td>
-            </tr>
-        }
-    </table>
+            @foreach (var hist in History)
+            {
+                <tr>
+                    <td>@hist.Step</td>
+                    <td>@hist.X.ToString("F5")</td>
+                    <td>@hist.Value.ToString("F5")</td>
+                </tr>
+            }
+        </table>
+    </div>
 }

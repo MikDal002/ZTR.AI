@@ -61,6 +61,15 @@ namespace ZTR.AI.Example.Shared.ResourceFiles {
         }
         
         /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Calculating....
+        /// </summary>
+        public static string Common_Calculating {
+            get {
+                return ResourceManager.GetString("Common.Calculating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Wyszukuje zlokalizowany ciąg podobny do ciągu Hello, world!.
         /// </summary>
         public static string helloworld {
@@ -75,6 +84,15 @@ namespace ZTR.AI.Example.Shared.ResourceFiles {
         public static string SimulatedAnnealing {
             get {
                 return ResourceManager.GetString("SimulatedAnnealing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Best result after {0} iteration:.
+        /// </summary>
+        public static string SimulatedAnnealing_BestResult {
+            get {
+                return ResourceManager.GetString("SimulatedAnnealing.BestResult", resourceCulture);
             }
         }
         
@@ -97,6 +115,24 @@ namespace ZTR.AI.Example.Shared.ResourceFiles {
         }
         
         /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Result after {0} iteration:.
+        /// </summary>
+        public static string SimulatedAnnealing_CurrentResult {
+            get {
+                return ResourceManager.GetString("SimulatedAnnealing.CurrentResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Value.
+        /// </summary>
+        public static string SimulatedAnnealing_IterationValue {
+            get {
+                return ResourceManager.GetString("SimulatedAnnealing.IterationValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Wyszukuje zlokalizowany ciąg podobny do ciągu Finding Sin(x) minimum.
         /// </summary>
         public static string SimulatedAnnealing_SinXOptimization {
@@ -111,6 +147,24 @@ namespace ZTR.AI.Example.Shared.ResourceFiles {
         public static string SimulatedAnnealing_StartEncourage {
             get {
                 return ResourceManager.GetString("SimulatedAnnealing.StartEncourage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Iteration.
+        /// </summary>
+        public static string SimulatedAnnealing_StepNo {
+            get {
+                return ResourceManager.GetString("SimulatedAnnealing.StepNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu X parameter.
+        /// </summary>
+        public static string SimulatedAnnealing_XParameter {
+            get {
+                return ResourceManager.GetString("SimulatedAnnealing.XParameter", resourceCulture);
             }
         }
         

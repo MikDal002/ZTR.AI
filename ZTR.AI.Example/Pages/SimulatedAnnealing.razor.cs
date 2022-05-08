@@ -22,7 +22,7 @@ namespace ZTR.AI.Example.Pages
                 minimumSolutionRange: Min, maximumSolutionRange:Max);
             int i = 0;
             History.Clear();
-
+            
             Task.Run(async () =>
             {
                 double prevTemperature = 0.0;
@@ -45,6 +45,7 @@ namespace ZTR.AI.Example.Pages
                        }
                        i++;
                    }
+
                    CurrentResult = simualatedAnnealingEngine.Result;
                    CurrentSolution = simualatedAnnealingEngine.CurrentSolution;
                    CurrentIteration = i;
