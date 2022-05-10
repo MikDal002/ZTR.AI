@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZTR.AI.Examples", "ZTR.AI.E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZTR.AI.Example", "ZTR.AI.Example\ZTR.AI.Example.csproj", "{106637A3-EFCF-43FD-BEED-5C25EAA27CD2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CICD", "CICD", "{ED977E43-35B6-4351-BCE0-1E543A2BA525}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
