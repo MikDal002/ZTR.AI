@@ -42,6 +42,14 @@
             "VSCode"
           ]
         },
+        "NetlifySiteAccessToken": {
+          "type": "string",
+          "description": "Netlify access token"
+        },
+        "NetlifySiteId": {
+          "type": "string",
+          "description": "Netlify site id"
+        },
         "NoLogo": {
           "type": "boolean",
           "description": "Disables displaying the NUKE logo"
@@ -73,7 +81,10 @@
             "enum": [
               "Clean",
               "Compile",
-              "Restore"
+              "Publish",
+              "PushToNetlify",
+              "Restore",
+              "Tests"
             ]
           }
         },
@@ -89,7 +100,10 @@
             "enum": [
               "Clean",
               "Compile",
-              "Restore"
+              "Publish",
+              "PushToNetlify",
+              "Restore",
+              "Tests"
             ]
           }
         },

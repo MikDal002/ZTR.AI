@@ -15,4 +15,8 @@
     <PackageDownload Include="GitVersion.Tool" Version="[5.8.0]" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\3rd\NetlifySharp\src\NetlifySharp\NetlifySharp.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,6 @@
 using System;
-using System.Linq;
+using JetBrains.Annotations;
+using NetlifySharp;
 using Nuke.Common;
 using Nuke.Common.CI;
 using Nuke.Common.Execution;
@@ -10,7 +11,6 @@ using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
-using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -25,10 +25,18 @@ class Build : NukeBuild
     ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
     ///   - Microsoft VSCode           https://nuke.build/vscode
 
-    public static int Main () => Execute<Build>(x => x.Compile);
+    public static int Main() => Execute<Build>(x => x.Compile);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+
+    [Parameter("Netlify site id")]
+    [Required]
+    readonly string NetlifySiteId;
+
+    [Parameter("Netlify access token")]
+    [Required]
+    readonly string NetlifySiteAccessToken;
 
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
@@ -82,9 +90,20 @@ class Build : NukeBuild
         .Executes(() =>
         {
             var projectToPublish = Solution.GetProject("ZTR.AI.Example");
-                DotNetPublish(s => s
-                    .SetProject(projectToPublish)
-                    .SetConfiguration(Configuration)
-                    .SetOutput(ArtifactsDirectory));
+            DotNetPublish(s => s
+                .SetProject(projectToPublish)
+                .SetConfiguration(Configuration)
+                .SetOutput(ArtifactsDirectory));
+        });
+
+    Target PushToNetlify => _ => _
+        .DependsOn(Publish)
+        .Requires(() => NetlifySiteId, () => NetlifySiteAccessToken)
+        .Executes(async () =>
+        {
+            
+            var netlifyClient = new NetlifyClient(NetlifySiteAccessToken);
+            var rootDirectory = ArtifactsDirectory / "wwwroot";
+            await netlifyClient.UpdateSiteAsync(rootDirectory, NetlifySiteId);
         });
 }
