@@ -128,7 +128,7 @@ namespace ZTR.AI.SimulatedAnnealing.Core.Tests
             new object[] {new Func<double, double>(x => Math.Pow(x, 2.0) ), 0, 0.2 },
 
             // Non-Convex Unimodal Functions https://machinelearningmastery.com/1d-test-functions-for-function-optimization/
-            new object[] {new Func<double, double>(x => (-(x + Math.Sin(x)) * Math.Exp(-Math.Pow(x, 2.0)))), -0.82423939785504219, 0.1 },
+            new object[] {new Func<double, double>(x => (-(x + Math.Sin(x)) * Math.Exp(-Math.Pow(x, 2.0)))), -0.82423939785504219, 1 },
             new object[] {new Func<double, double>(Math.Sin), -1, 0.1 },
             new object[] {new Func<double, double>(Math.Cos), -1, 0.1 },
         };

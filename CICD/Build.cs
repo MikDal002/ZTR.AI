@@ -53,7 +53,7 @@ class Build : NukeBuild
         });
 
     Target Compile => _ => _
-        .DependsOn(Restore)
+        .DependsOn(Clean, Restore)
         .Executes(() =>
         {
             DotNetBuild(s => s
@@ -65,4 +65,14 @@ class Build : NukeBuild
                 .EnableNoRestore());
         });
 
+    Target Tests => _ => _
+        .DependsOn(Compile)
+        .TriggeredBy(Compile)
+        .Executes(() =>
+        {
+            var projects = Solution.GetProjects("*.Test*");
+            DotNetTest(s => s
+                .SetConfiguration(Configuration)
+                .CombineWith(projects, (settings, project) => settings.SetProjectFile(project)));
+        });
 }
