@@ -75,4 +75,16 @@ class Build : NukeBuild
                 .SetConfiguration(Configuration)
                 .CombineWith(projects, (settings, project) => settings.SetProjectFile(project)));
         });
+
+
+    Target Publish => _ => _
+        .DependsOn(Compile)
+        .Executes(() =>
+        {
+            var projectToPublish = Solution.GetProject("ZTR.AI.Example");
+                DotNetPublish(s => s
+                    .SetProject(projectToPublish)
+                    .SetConfiguration(Configuration)
+                    .SetOutput(ArtifactsDirectory));
+        });
 }
