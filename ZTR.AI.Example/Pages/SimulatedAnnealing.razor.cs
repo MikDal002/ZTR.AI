@@ -34,10 +34,11 @@ namespace ZTR.AI.Example.Pages
         };
 
 
-        public string Name { get; init; }
+        public string Name { get; init; } = string.Empty;
         public IEnumerable<DataItem> DrawingData =>
             MyMoreLinq.Range(Min, Max, Step).Select(d => new DataItem(d, Function(d)));
-        public Func<double, double> Function { get; init; }
+
+        public Func<double, double> Function { get; init; } = _ =>  0.0;
         public double Step { get; init; } = 0.1;
         public double Min { get; init; } = -Math.PI;
         public double Max { get; init; } = Math.PI;
