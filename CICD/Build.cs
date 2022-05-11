@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using NetlifySharp;
 using Nuke.Common;
 using Nuke.Common.CI;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
@@ -17,6 +18,25 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [CheckBuildProjectConfigurations]
 [ShutdownDotNetAfterServerBuild]
+[GitHubActions(
+    "ForPR",
+    GitHubActionsImage.WindowsLatest,
+    GitHubActionsImage.UbuntuLatest,
+    OnPushBranchesIgnore = new[] { MasterBranch },
+    OnPullRequestBranches = new[] { DevelopBranch },
+    PublishArtifacts = false,
+    InvokedTargets = new[] { nameof(Tests) },
+    CacheKeyFiles = new[] { "global.json", "source/**/*.csproj" },
+    EnableGitHubToken = true)]
+[GitHubActions(
+    "Deploy",
+    GitHubActionsImage.WindowsLatest,
+    GitHubActionsImage.UbuntuLatest,
+    OnPushBranches = new[] { MasterBranch },
+    PublishArtifacts = false,
+    InvokedTargets = new[] { nameof(Tests) },
+    CacheKeyFiles = new[] { "global.json", "source/**/*.csproj" },
+    EnableGitHubToken = true)]
 class Build : NukeBuild
 {
     /// Support plugins are available for:
@@ -25,17 +45,18 @@ class Build : NukeBuild
     ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
     ///   - Microsoft VSCode           https://nuke.build/vscode
 
+    const string MasterBranch = "master";
+    const string DevelopBranch = "develop";
+
     public static int Main() => Execute<Build>(x => x.Compile);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Parameter("Netlify site id")]
-    [Required]
     readonly string NetlifySiteId;
 
     [Parameter("Netlify access token")]
-    [Required]
     readonly string NetlifySiteAccessToken;
 
     [Solution] readonly Solution Solution;
