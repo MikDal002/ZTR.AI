@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using NetlifySharp;
 using Nuke.Common;
 using Nuke.Common.CI;
@@ -13,10 +15,12 @@ using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.ReportGenerator;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using Logger = Serilog.Core.Logger;
 
 [CheckBuildProjectConfigurations]
 [ShutdownDotNetAfterServerBuild]
@@ -122,9 +126,10 @@ class Build : NukeBuild
     Target TestCoverage => _ => _
         .DependsOn(Tests)
         .TriggeredBy(Tests)
-        .OnlyWhenStatic(() => EnvironmentInfo.IsWin)
+        .OnlyWhenStatic(() => IsWindowsWhenReleaseOrAnyOsWhenOther())
         .Executes(() =>
         {
+            Serilog.Log.Warning($"IsWin: {RuntimeInformation.IsOSPlatform(OSPlatform.Windows)}, configuration: {Configuration}");
             var previousCoverageResult = string.Empty;
             CoverletTasks.Coverlet(s => s
                 .SetFormat(CoverletOutputFormat.cobertura, CoverletOutputFormat.json)
@@ -156,6 +161,39 @@ class Build : NukeBuild
                 .SetFramework("net6.0")
                 .SetReports(TestResultDirectory.GlobFiles("**/*.cobertura.xml").Select(d => d.ToString())));
         });
+
+    bool IsWindowsWhenReleaseOrAnyOsWhenOther()
+    {
+        var isWindows = IsWindows();
+        if (isWindows && Configuration == Configuration.Release) return true;
+        return Configuration.Release != Configuration;
+    }
+
+    static bool IsWindows()
+    {
+        try
+        {
+            Process p = new Process
+            {
+                StartInfo =
+                {
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    FileName = "uname",
+                    Arguments = "-s"
+                }
+            };
+            p.Start();
+            string uname = p.StandardOutput.ReadToEnd().Trim();
+            Serilog.Log.Warning($"You run this built on {uname} machine.");
+            // MSYS_NT - this name return uname on Github Action's machine.
+            return uname.Contains("MSYS_NT", StringComparison.InvariantCultureIgnoreCase);
+        }
+        catch (Exception)
+        {
+            return true;
+        }
+    }
 
     Target Publish => _ => _
         .DependsOn(Compile)
