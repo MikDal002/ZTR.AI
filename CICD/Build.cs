@@ -1,5 +1,4 @@
-using System;
-using JetBrains.Annotations;
+using System.Collections.Generic;
 using NetlifySharp;
 using Nuke.Common;
 using Nuke.Common.CI;
@@ -9,8 +8,11 @@ using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
+using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
+using Nuke.Common.Tools.ReportGenerator;
+using System.Linq;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
@@ -62,15 +64,29 @@ class Build : NukeBuild
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
     [GitVersion] readonly GitVersion GitVersion;
+    
+    #region Tests Data
+    readonly int UnitTestCoverage_Minimum = 69;
 
-    AbsolutePath SourceDirectory => RootDirectory / "src";
+    DotNetTestSettings TestSettings => new DotNetTestSettings()
+        .EnableCollectCoverage() // you need this line to coverage just started
+        .SetConfiguration(Configuration)
+        .SetResultsDirectory(TestResultDirectory / "results")
+        .EnableNoBuild();
+    IEnumerable<Project> TestsProjects => Solution.GetProjects("*.Test*");
+
+    AbsolutePath TestResultDirectory => RootDirectory / "testrestults";
+
+    #endregion
+
+    AbsolutePath SourceDirectory => RootDirectory;
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
 
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
         {
-            SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
+            Solution.GetProjects("ZTR.AI").ForEach(d => GlobDirectories(d.Directory, "**/bin", "**/obj").ForEach(DeleteDirectory));
             EnsureCleanDirectory(ArtifactsDirectory);
         });
 
@@ -99,12 +115,47 @@ class Build : NukeBuild
         .TriggeredBy(Compile)
         .Executes(() =>
         {
-            var projects = Solution.GetProjects("*.Test*");
-            DotNetTest(s => s
-                .SetConfiguration(Configuration)
-                .CombineWith(projects, (settings, project) => settings.SetProjectFile(project)));
+            EnsureCleanDirectory(TestResultDirectory);
+            DotNetTest(TestSettings.SetProjectFile(Solution));
         });
 
+    Target TestCoverage => _ => _
+        .DependsOn(Tests)
+        .TriggeredBy(Tests)
+        .OnlyWhenStatic(() => EnvironmentInfo.IsWin)
+        .Executes(() =>
+        {
+            var previousCoverageResult = string.Empty;
+            CoverletTasks.Coverlet(s => s
+                .SetFormat(CoverletOutputFormat.cobertura, CoverletOutputFormat.json)
+                .CombineWith(TestsProjects, (settings, project) =>
+                    {
+                        var projectName = "**/" + project.Name + ".dll";
+                        var first = SourceDirectory.GlobFiles(projectName).First();
+                        var testResultFile = TestResultDirectory / project.Name; // / $"{project.Name}.cobertura.xml";
+
+                        settings = settings.SetAssembly(first)
+                            .SetTargetSettings(TestSettings.SetProjectFile(project))
+                            .SetOutput(testResultFile + "/");
+
+                        if (!string.IsNullOrWhiteSpace(previousCoverageResult))
+                            settings = settings
+                                .SetMergeWith(previousCoverageResult);
+                        if (TestsProjects.Select(d => d.ProjectId).Last() == project.ProjectId)
+                            settings = settings.SetThreshold(UnitTestCoverage_Minimum);
+
+                        previousCoverageResult = testResultFile / "coverage.json";
+                        return settings;
+                    }
+
+                )
+            );
+
+            ReportGeneratorTasks.ReportGenerator(s => s
+                .SetTargetDirectory(TestResultDirectory / "report")
+                .SetFramework("net6.0")
+                .SetReports(TestResultDirectory.GlobFiles("**/*.cobertura.xml").Select(d => d.ToString())));
+        });
 
     Target Publish => _ => _
         .DependsOn(Compile)
@@ -122,7 +173,7 @@ class Build : NukeBuild
         .Requires(() => NetlifySiteId, () => NetlifySiteAccessToken)
         .Executes(async () =>
         {
-            
+
             var netlifyClient = new NetlifyClient(NetlifySiteAccessToken);
             var rootDirectory = ArtifactsDirectory / "wwwroot";
             await netlifyClient.UpdateSiteAsync(rootDirectory, NetlifySiteId);
