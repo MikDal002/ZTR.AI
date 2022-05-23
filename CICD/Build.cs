@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using NetlifySharp;
 using Nuke.Common;
 using Nuke.Common.CI;
@@ -14,13 +11,15 @@ using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.ReportGenerator;
+using Nuke.Common.Utilities.Collections;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using Logger = Serilog.Core.Logger;
 
 [CheckBuildProjectConfigurations]
 [ShutdownDotNetAfterServerBuild]
@@ -68,15 +67,13 @@ class Build : NukeBuild
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
     [GitVersion] readonly GitVersion GitVersion;
-    
+
     #region Tests Data
     readonly int UnitTestCoverage_Minimum = 69;
 
     DotNetTestSettings TestSettings => new DotNetTestSettings()
         .EnableCollectCoverage() // you need this line to coverage just started
-        .SetConfiguration(Configuration)
-        .SetResultsDirectory(TestResultDirectory / "results")
-        .EnableNoBuild();
+        .SetResultsDirectory(TestResultDirectory / "results");
     IEnumerable<Project> TestsProjects => Solution.GetProjects("*.Test*");
 
     AbsolutePath TestResultDirectory => RootDirectory / "testrestults";
@@ -120,27 +117,37 @@ class Build : NukeBuild
         .Executes(() =>
         {
             EnsureCleanDirectory(TestResultDirectory);
-            DotNetTest(TestSettings.SetProjectFile(Solution));
+            DotNetTest(TestSettings
+                .SetConfiguration(Configuration)
+                .EnableNoBuild()
+                .SetProjectFile(Solution));
         });
 
     Target TestCoverage => _ => _
         .DependsOn(Tests)
         .TriggeredBy(Tests)
-        .OnlyWhenStatic(() => IsWindowsWhenReleaseOrAnyOsWhenOther())
+        //.OnlyWhenStatic(() => IsWindowsWhenReleaseOrAnyOsWhenOther())
         .Executes(() =>
         {
             Serilog.Log.Warning($"IsWin: {RuntimeInformation.IsOSPlatform(OSPlatform.Windows)}, configuration: {Configuration}");
+            DotNetTest(TestSettings
+                .SetConfiguration(Configuration.Debug)
+                .SetProjectFile(Solution));
+
             var previousCoverageResult = string.Empty;
             CoverletTasks.Coverlet(s => s
                 .SetFormat(CoverletOutputFormat.cobertura, CoverletOutputFormat.json)
                 .CombineWith(TestsProjects, (settings, project) =>
                     {
-                        var projectName = "**/" + project.Name + ".dll";
+                        var projectName = $"**/{Configuration.Debug}/**/" + project.Name + ".dll";
                         var first = SourceDirectory.GlobFiles(projectName).First();
                         var testResultFile = TestResultDirectory / project.Name; // / $"{project.Name}.cobertura.xml";
 
                         settings = settings.SetAssembly(first)
-                            .SetTargetSettings(TestSettings.SetProjectFile(project))
+                            .SetTargetSettings(TestSettings
+                                                    .SetConfiguration(Configuration.Debug)
+                                                    //.EnableNoBuild()
+                                                    .SetProjectFile(project))
                             .SetOutput(testResultFile + "/");
 
                         if (!string.IsNullOrWhiteSpace(previousCoverageResult))
