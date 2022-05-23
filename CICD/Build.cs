@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Nuke.Common.Tools.DotCover;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -71,9 +72,8 @@ class Build : NukeBuild
     #region Tests Data
     readonly int UnitTestCoverage_Minimum = 69;
 
-    DotNetTestSettings TestSettings => new DotNetTestSettings()
-        .EnableCollectCoverage() // you need this line to coverage just started
-        .SetResultsDirectory(TestResultDirectory / "results");
+    DotNetTestSettings TestSettings => new DotNetTestSettings();
+        //.SetResultsDirectory(TestResultDirectory / "results");
     IEnumerable<Project> TestsProjects => Solution.GetProjects("*.Test*");
 
     AbsolutePath TestResultDirectory => RootDirectory / "testrestults";
@@ -130,10 +130,17 @@ class Build : NukeBuild
         .Executes(() =>
         {
             Serilog.Log.Warning($"IsWin: {RuntimeInformation.IsOSPlatform(OSPlatform.Windows)}, configuration: {Configuration}");
-            DotNetTest(TestSettings
+            var coverageTestSettings = TestSettings
                 .SetConfiguration(Configuration.Debug)
-                .SetProjectFile(Solution));
-
+                // .EnableCollectCoverage() // you need this line to coverage just started
+                // .SetDataCollector("XPlat Code Coverage")
+                // .SetProperty("Threshold", "100")
+                // .SetCoverletOutputFormat($"{CoverletOutputFormat.json}")
+                // .SetCoverletOutput(TestResultDirectory)
+                // .SetProperty("MergeWith", TestResultDirectory / "coverage.json")
+                .SetProjectFile(Solution);
+            DotNetTest(coverageTestSettings);
+            
             var previousCoverageResult = string.Empty;
             CoverletTasks.Coverlet(s => s
                 .SetFormat(CoverletOutputFormat.cobertura, CoverletOutputFormat.json)
@@ -143,11 +150,14 @@ class Build : NukeBuild
                         var first = SourceDirectory.GlobFiles(projectName).First();
                         var testResultFile = TestResultDirectory / project.Name; // / $"{project.Name}.cobertura.xml";
 
+                        Serilog.Log.Warning(coverageTestSettings
+                            .EnableNoBuild()
+                            .SetProjectFile(project).GetProcessArguments().RenderForExecution());
+
                         settings = settings.SetAssembly(first)
-                            .SetTargetSettings(TestSettings
-                                                    .SetConfiguration(Configuration.Debug)
-                                                    //.EnableNoBuild()
-                                                    .SetProjectFile(project))
+                            .SetTargetSettings(coverageTestSettings
+                                .EnableNoBuild()
+                                .SetProjectFile(project))
                             .SetOutput(testResultFile + "/");
 
                         if (!string.IsNullOrWhiteSpace(previousCoverageResult))
