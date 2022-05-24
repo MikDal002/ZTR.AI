@@ -81,6 +81,7 @@
             "enum": [
               "Clean",
               "Compile",
+              "IncreaseVesrion",
               "Publish",
               "PushToNetlify",
               "Restore",
@@ -101,6 +102,7 @@
             "enum": [
               "Clean",
               "Compile",
+              "IncreaseVesrion",
               "Publish",
               "PushToNetlify",
               "Restore",

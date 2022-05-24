@@ -1,27 +1,3 @@
-using NetlifySharp;
-using Nuke.Common;
-using Nuke.Common.CI;
-using Nuke.Common.CI.GitHubActions;
-using Nuke.Common.Execution;
-using Nuke.Common.Git;
-using Nuke.Common.IO;
-using Nuke.Common.ProjectModel;
-using Nuke.Common.Tooling;
-using Nuke.Common.Tools.Coverlet;
-using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.Tools.ReportGenerator;
-using Nuke.Common.Utilities.Collections;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using Nuke.Common.Tools.DotCover;
-using static Nuke.Common.IO.FileSystemTasks;
-using static Nuke.Common.IO.PathConstruction;
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
-
 [CheckBuildProjectConfigurations]
 [ShutdownDotNetAfterServerBuild]
 [GitHubActions(
@@ -40,48 +16,40 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     GitHubActionsImage.UbuntuLatest,
     OnPushBranches = new[] { MasterBranch },
     PublishArtifacts = false,
-    InvokedTargets = new[] { nameof(Tests) },
+    InvokedTargets = new[] { nameof(Tests), nameof(PushToNetlify) },
     CacheKeyFiles = new[] { "global.json", "source/**/*.csproj" },
     EnableGitHubToken = true)]
-class Build : NukeBuild
+partial class Build : NukeBuild
 {
-    /// Support plugins are available for:
-    ///   - JetBrains ReSharper        https://nuke.build/resharper
-    ///   - JetBrains Rider            https://nuke.build/rider
-    ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
-    ///   - Microsoft VSCode           https://nuke.build/vscode
-
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
-
     public static int Main() => Execute<Build>(x => x.Compile);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [Parameter("Netlify site id")]
-    readonly string NetlifySiteId;
-
-    [Parameter("Netlify access token")]
-    readonly string NetlifySiteAccessToken;
-
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion] readonly GitVersion GitVersion;
+    [GitVersion(UpdateBuildNumber = true)] readonly GitVersion GitVersion;
 
     #region Tests Data
     readonly int UnitTestCoverage_Minimum = 69;
-
     DotNetTestSettings TestSettings => new DotNetTestSettings();
-        //.SetResultsDirectory(TestResultDirectory / "results");
+    //.SetResultsDirectory(TestResultDirectory / "results");
     IEnumerable<Project> TestsProjects => Solution.GetProjects("*.Test*");
-
     AbsolutePath TestResultDirectory => RootDirectory / "testrestults";
-
     #endregion
 
     AbsolutePath SourceDirectory => RootDirectory;
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+
+    Target IncreaseVesrion => _ => _
+        .Executes(() =>
+        {
+            GitVersionTasks.GitVersion(c => c
+                
+                .SetVerbosity(GitVersionVerbosity.debug));
+        });
 
     Target Clean => _ => _
         .Before(Restore)
@@ -121,116 +89,5 @@ class Build : NukeBuild
                 .SetConfiguration(Configuration)
                 .EnableNoBuild()
                 .SetProjectFile(Solution));
-        });
-
-    Target TestCoverage => _ => _
-        .DependsOn(Tests)
-        .TriggeredBy(Tests)
-        //.OnlyWhenStatic(() => IsWindowsWhenReleaseOrAnyOsWhenOther())
-        .Executes(() =>
-        {
-            Serilog.Log.Warning($"IsWin: {RuntimeInformation.IsOSPlatform(OSPlatform.Windows)}, configuration: {Configuration}");
-            var coverageTestSettings = TestSettings
-                .SetConfiguration(Configuration.Debug)
-                // .EnableCollectCoverage() // you need this line to coverage just started
-                // .SetDataCollector("XPlat Code Coverage")
-                // .SetProperty("Threshold", "100")
-                // .SetCoverletOutputFormat($"{CoverletOutputFormat.json}")
-                // .SetCoverletOutput(TestResultDirectory)
-                // .SetProperty("MergeWith", TestResultDirectory / "coverage.json")
-                .SetProjectFile(Solution);
-            DotNetTest(coverageTestSettings);
-            
-            var previousCoverageResult = string.Empty;
-            CoverletTasks.Coverlet(s => s
-                .SetFormat(CoverletOutputFormat.cobertura, CoverletOutputFormat.json)
-                .CombineWith(TestsProjects, (settings, project) =>
-                    {
-                        var projectName = $"**/{Configuration.Debug}/**/" + project.Name + ".dll";
-                        var first = SourceDirectory.GlobFiles(projectName).First();
-                        var testResultFile = TestResultDirectory / project.Name; // / $"{project.Name}.cobertura.xml";
-
-                        Serilog.Log.Warning(coverageTestSettings
-                            .EnableNoBuild()
-                            .SetProjectFile(project).GetProcessArguments().RenderForExecution());
-
-                        settings = settings.SetAssembly(first)
-                            .SetTargetSettings(coverageTestSettings
-                                .EnableNoBuild()
-                                .SetProjectFile(project))
-                            .SetOutput(testResultFile + "/");
-
-                        if (!string.IsNullOrWhiteSpace(previousCoverageResult))
-                            settings = settings
-                                .SetMergeWith(previousCoverageResult);
-                        if (TestsProjects.Select(d => d.ProjectId).Last() == project.ProjectId)
-                            settings = settings.SetThreshold(UnitTestCoverage_Minimum);
-
-                        previousCoverageResult = testResultFile / "coverage.json";
-                        return settings;
-                    }
-
-                )
-            );
-
-            ReportGeneratorTasks.ReportGenerator(s => s
-                .SetTargetDirectory(TestResultDirectory / "report")
-                .SetFramework("net6.0")
-                .SetReports(TestResultDirectory.GlobFiles("**/*.cobertura.xml").Select(d => d.ToString())));
-        });
-
-    bool IsWindowsWhenReleaseOrAnyOsWhenOther()
-    {
-        var isWindows = IsWindows();
-        if (isWindows && Configuration == Configuration.Release) return true;
-        return Configuration.Release != Configuration;
-    }
-
-    static bool IsWindows()
-    {
-        try
-        {
-            Process p = new Process
-            {
-                StartInfo =
-                {
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    FileName = "uname",
-                    Arguments = "-s"
-                }
-            };
-            p.Start();
-            string uname = p.StandardOutput.ReadToEnd().Trim();
-            Serilog.Log.Warning($"You run this built on {uname} machine.");
-            // MSYS_NT - this name return uname on Github Action's machine.
-            return uname.Contains("MSYS_NT", StringComparison.InvariantCultureIgnoreCase);
-        }
-        catch (Exception)
-        {
-            return true;
-        }
-    }
-
-    Target Publish => _ => _
-        .DependsOn(Compile)
-        .Executes(() =>
-        {
-            var projectToPublish = Solution.GetProject("ZTR.AI.Example");
-            DotNetPublish(s => s
-                .SetProject(projectToPublish)
-                .SetConfiguration(Configuration)
-                .SetOutput(ArtifactsDirectory));
-        });
-
-    Target PushToNetlify => _ => _
-        .DependsOn(Publish)
-        .Requires(() => NetlifySiteId, () => NetlifySiteAccessToken)
-        .Executes(async () =>
-        {
-
-            var netlifyClient = new NetlifyClient(NetlifySiteAccessToken);
-            var rootDirectory = ArtifactsDirectory / "wwwroot";
-            await netlifyClient.UpdateSiteAsync(rootDirectory, NetlifySiteId);
         });
 }
