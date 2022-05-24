@@ -16,4 +16,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\ZTR.AI.Common\ZTR.AI.Common.Core\ZTR.AI.Common.Core.csproj" />
+  </ItemGroup>
+
 </Project>
