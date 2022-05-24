@@ -1,3 +1,4 @@
+
 partial class Build
 {
     [Parameter] readonly string NetlifySiteId;
