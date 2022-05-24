@@ -44,11 +44,10 @@
         },
         "NetlifySiteAccessToken": {
           "type": "string",
-          "description": "Netlify access token"
+          "default": "Secrets must be entered via 'nuke :secrets [profile]'"
         },
         "NetlifySiteId": {
-          "type": "string",
-          "description": "Netlify site id"
+          "type": "string"
         },
         "NoLogo": {
           "type": "boolean",
@@ -81,7 +80,6 @@
             "enum": [
               "Clean",
               "Compile",
-              "IncreaseVesrion",
               "Publish",
               "PushToNetlify",
               "Restore",
@@ -102,7 +100,6 @@
             "enum": [
               "Clean",
               "Compile",
-              "IncreaseVesrion",
               "Publish",
               "PushToNetlify",
               "Restore",
