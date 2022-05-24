@@ -1,8 +1,8 @@
 partial class Build
 {
-    [Parameter("Netlify site id")] readonly string NetlifySiteId;
+    [Parameter] readonly string NetlifySiteId;
 
-    [Parameter("Netlify access token")] readonly string NetlifySiteAccessToken;
+    [Parameter][Secret] readonly string NetlifySiteAccessToken;
 
     Target Publish => _ => _
         .DependsOn(Compile)
@@ -17,7 +17,7 @@ partial class Build
 
     Target PushToNetlify => _ => _
         .DependsOn(Publish)
-        .Requires(() => NetlifySiteId, () => NetlifySiteAccessToken)
+        .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(NetlifySiteId), () => !string.IsNullOrWhiteSpace(NetlifySiteAccessToken))
         .Executes(async () =>
         {
             var netlifyClient = new NetlifyClient(NetlifySiteAccessToken);

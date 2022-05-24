@@ -41,15 +41,7 @@ partial class Build : NukeBuild
 
     AbsolutePath SourceDirectory => RootDirectory;
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
-
-    Target IncreaseVesrion => _ => _
-        .Executes(() =>
-        {
-            GitVersionTasks.GitVersion(c => c
-                
-                .SetVerbosity(GitVersionVerbosity.debug));
-        });
-
+    
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
