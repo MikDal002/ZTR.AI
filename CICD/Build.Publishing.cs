@@ -17,7 +17,7 @@ partial class Build
 
     Target PushToNetlify => _ => _
         .DependsOn(Publish)
-        .Requires(() => NetlifySiteId, () => NetlifySiteAccessToken)
+        .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(NetlifySiteId), () => !string.IsNullOrWhiteSpace(NetlifySiteAccessToken))
         .Executes(async () =>
         {
             var netlifyClient = new NetlifyClient(NetlifySiteAccessToken);
