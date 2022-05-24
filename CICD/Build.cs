@@ -13,7 +13,6 @@
 [GitHubActions(
     "Deploy",
     GitHubActionsImage.WindowsLatest,
-    GitHubActionsImage.UbuntuLatest,
     OnPushBranches = new[] { MasterBranch },
     PublishArtifacts = false,
     InvokedTargets = new[] { nameof(Tests), nameof(PushToNetlify) },

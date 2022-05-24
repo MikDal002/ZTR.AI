@@ -26,7 +26,7 @@ partial class Build
             };
             p.Start();
             string uname = p.StandardOutput.ReadToEnd().Trim();
-            Serilog.Log.Warning($"You run this built on {uname} machine.");
+            Serilog.Log.Information($"You run this built on {uname} machine.");
             // MSYS_NT - this name return uname on Github Action's machine.
             return uname.Contains("MSYS_NT", StringComparison.InvariantCultureIgnoreCase);
         }

@@ -6,8 +6,6 @@ partial class Build
         .OnlyWhenStatic(() => IsWindowsWhenReleaseOrAnyOsWhenOther())
         .Executes(() =>
         {
-            Serilog.Log.Warning(
-                $"IsWin: {RuntimeInformation.IsOSPlatform(OSPlatform.Windows)}, configuration: {Configuration}");
             var coverageTestSettings = TestSettings
                 .SetConfiguration(Configuration.Debug)
                 .SetProjectFile(Solution);
