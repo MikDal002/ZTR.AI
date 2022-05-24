@@ -6,10 +6,10 @@ namespace ZTR.AI.Example.Shared
 {
     public partial class CultureSelector
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-        [Inject]
-        public IJSRuntime JSRuntime { get; set; }
+
+        [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+
+        [Inject] public IJSRuntime JSRuntime { get; set; } = default!;
 
         private CultureInfo[] cultures = new[]
         {
