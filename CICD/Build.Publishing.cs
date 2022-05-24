@@ -1,8 +1,8 @@
 partial class Build
 {
-    [Parameter("Netlify site id")] readonly string NetlifySiteId;
+    [Parameter] readonly string NetlifySiteId;
 
-    [Parameter("Netlify access token")] readonly string NetlifySiteAccessToken;
+    [Parameter][Secret] readonly string NetlifySiteAccessToken;
 
     Target Publish => _ => _
         .DependsOn(Compile)
