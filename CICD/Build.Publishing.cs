@@ -1,5 +1,11 @@
+/// <summary>
+/// Temporary comment
+/// </summary>
 partial class Build
 {
+    /// <summary>
+    /// More comments
+    /// </summary>
     [Parameter] readonly string NetlifySiteId;
 
     [Parameter][Secret] readonly string NetlifySiteAccessToken;
