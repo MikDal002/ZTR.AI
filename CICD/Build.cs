@@ -12,8 +12,9 @@
     EnableGitHubToken = true)]
 [GitHubActions(
     "Deploy",
-    GitHubActionsImage.WindowsLatest,
-    OnPushBranches = new[] { MasterBranch },
+    GitHubActionsImage.WindowsLatest, 
+    ImportSecrets = new [] {nameof(NetlifySiteId), nameof(NetlifySiteAccessToken) },
+    OnPushBranches = new[] { MasterBranch }, 
     PublishArtifacts = false,
     InvokedTargets = new[] { nameof(Tests), nameof(PushToNetlify) },
     CacheKeyFiles = new[] { "global.json", "source/**/*.csproj" },

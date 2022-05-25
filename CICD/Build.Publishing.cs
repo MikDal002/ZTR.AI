@@ -7,7 +7,7 @@ partial class Build
     /// More comments
     /// </summary>
     [Parameter] readonly string NetlifySiteId;
-
+    
     [Parameter][Secret] readonly string NetlifySiteAccessToken;
 
     Target Publish => _ => _

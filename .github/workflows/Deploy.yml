@@ -39,6 +39,6 @@ jobs:
       - name: Run './build.cmd Tests PushToNetlify'
         run: ./build.cmd Tests PushToNetlify
         env:
+          NetlifySiteId: ${{ secrets.NETLIFY_SITE_ID }}
+          NetlifySiteAccessToken: ${{ secrets.NETLIFY_SITE_ACCESS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NetlifySiteId: ${{ secrets.NetlifySiteId }}
-          NetlifySiteAccessToken: ${{ secrets.NetlifySiteAccessToken }}
