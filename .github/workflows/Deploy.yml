@@ -40,3 +40,5 @@ jobs:
         run: ./build.cmd Tests PushToNetlify
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NetlifySiteId: ${{ secrets.NetlifySiteId }}
+          NetlifySiteAccessToken: ${{ secrets.NetlifySiteAccessToken }}

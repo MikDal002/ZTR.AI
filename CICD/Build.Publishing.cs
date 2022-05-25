@@ -21,6 +21,9 @@ partial class Build
                 .SetOutput(ArtifactsDirectory));
         });
 
+    /// <summary>
+    /// This is my small test. See what will happen.
+    /// </summary>
     Target PushToNetlify => _ => _
         .DependsOn(Publish)
         .Requires(() => NetlifySiteId, () => NetlifySiteAccessToken)
