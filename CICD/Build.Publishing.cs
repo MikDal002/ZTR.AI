@@ -3,9 +3,6 @@
 /// </summary>
 partial class Build
 {
-    /// <summary>
-    /// More comments
-    /// </summary>
     [Parameter] readonly string NetlifySiteId;
     
     [Parameter][Secret] readonly string NetlifySiteAccessToken;
@@ -20,10 +17,7 @@ partial class Build
                 .SetConfiguration(Configuration)
                 .SetOutput(ArtifactsDirectory));
         });
-
-    /// <summary>
-    /// This is my small test. See what will happen.
-    /// </summary>
+    
     Target PushToNetlify => _ => _
         .DependsOn(Publish)
         .OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(NetlifySiteId), () => !string.IsNullOrWhiteSpace(NetlifySiteAccessToken))
