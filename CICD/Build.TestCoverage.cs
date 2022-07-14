@@ -3,7 +3,7 @@ partial class Build
     Target TestCoverage => _ => _
         .DependsOn(Tests)
         .TriggeredBy(Tests)
-        .OnlyWhenStatic(() => IsWindowsWhenReleaseOrAnyOsWhenOther())
+        .OnlyWhenDynamic(() => IsWindowsWhenReleaseOrAnyOsWhenOther())
         .Executes(() =>
         {
             var coverageTestSettings = TestSettings

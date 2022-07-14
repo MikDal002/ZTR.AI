@@ -1,8 +1,11 @@
+using System.Runtime.CompilerServices;
 using System.Globalization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
 using ZTR.AI.Example;
+
+[assembly: InternalsVisibleTo("ZTR.AI.Example.Tests")]
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 

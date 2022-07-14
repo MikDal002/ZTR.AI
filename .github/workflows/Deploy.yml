@@ -27,8 +27,6 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v1
-        with: 
-          submodules: true
       - name: Cache .nuke/temp, ~/.nuget/packages
         uses: actions/cache@v2
         with:

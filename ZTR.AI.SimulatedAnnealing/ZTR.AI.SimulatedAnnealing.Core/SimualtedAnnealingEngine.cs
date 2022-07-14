@@ -29,7 +29,6 @@ public class SimualatedAnnealingEngine
     }
 
     public double StartingTemperature { get; }
-
     public double CurrentSolution { get; private set; }
     public double WorkingTemperature { get; private set; }
     public double EndingTemperature { get; }
@@ -92,8 +91,6 @@ public class SimualatedAnnealingEngine
         }
 
         return completelyRandomSolution;
-
-
     }
 
     private void SetNewResult(double proposedResult, double proposedPosition)
