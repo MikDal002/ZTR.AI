@@ -1,6 +1,15 @@
+using System.Runtime.ExceptionServices;
 using FluentAssertions;
+using FluentAssertions.Common;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
 
@@ -20,9 +29,124 @@ public class OtherTests
     }
 }
 
+public abstract class WebHostServerFixture : IDisposable
+{
+    private readonly Lazy<Uri> _rootUriInitializer;
+
+    public Uri RootUri => _rootUriInitializer.Value;
+    public IHost Host { get; set; }
+
+    public WebHostServerFixture()
+    {
+        _rootUriInitializer = new Lazy<Uri>(() => new Uri(StartAndGetRootUri()));
+    }
+
+    protected virtual string StartAndGetRootUri()
+    {
+        Host = CreateWebHost();
+        RunInBackgroundThread(Host.Start);
+        return Host.Services.GetService<IServer>().Features
+            .Get<IServerAddressesFeature>()
+            .Addresses.Single();
+    }
+
+    protected abstract IHost CreateWebHost();
+
+    protected static void RunInBackgroundThread(Action action)
+    {
+        using var isDone = new ManualResetEvent(false);
+        ExceptionDispatchInfo edi = null;
+        new Thread(() =>
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception ex)
+            {
+                edi = ExceptionDispatchInfo.Capture(ex);
+            }
+
+            isDone.Set();
+        }).Start();
+
+        if (!isDone.WaitOne(TimeSpan.FromSeconds(10))) throw new TimeoutException("Timed out waiting for: " + action);
+
+        if (edi != null)
+        {
+            edi.Throw();
+        }
+    }
+
+    public virtual void Dispose()
+    {
+        Host?.Dispose();
+        Host?.StopAsync();
+    }
+}
+
+public class BlazorWebAssemblyWebHostFixture<TProgram> : WebHostServerFixture
+{
+    protected override IHost CreateWebHost()
+    {
+        return new HostBuilder()
+            .ConfigureHostConfiguration(config =>
+            {
+                var applicationPath = typeof(TProgram).Assembly.Location;
+                var applicationDirectory = Path.GetDirectoryName(applicationPath);
+
+#if NET6_0_OR_GREATER
+                var name = Path.ChangeExtension(applicationPath, ".staticwebassets.runtime.json");
+#else
+                var name = Path.ChangeExtension(applicationPath, ".StaticWebAssets.xml");
+#endif
+                var inMemoryConfiguration = new Dictionary<string, string>()
+                {
+                    [WebHostDefaults.StaticWebAssetsKey] = name
+                };
+            })
+            .ConfigureWebHostDefaults(webBuilder => webBuilder
+                .UseKestrel()
+                .UseSolutionRelativeContentRoot(typeof(TProgram).Assembly.GetName().Name)
+                .UseStaticWebAssets()
+                .UseStartup<Startup>()
+                .UseUrls($"http://127.0.01:0"))
+            .Build();
+    }
+
+    private sealed class Startup
+    {
+        public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddRouting();
+        }
+
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseDeveloperExceptionPage();
+            app.UseBlazorFrameworkFiles();
+            app.UseStaticFiles(new StaticFileOptions() {ServeUnknownFileTypes = true});
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapFallbackToFile("index.html");
+            });
+        }
+    }
+}
+
 [Parallelizable(ParallelScope.Self)]
 public class SimplePlaywrightTests
 {
+    private readonly BlazorWebAssemblyWebHostFixture<Startup> _server;
+
     [SetUp]
     public void Setup()
     {
