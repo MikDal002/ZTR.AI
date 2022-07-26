@@ -11,7 +11,7 @@ namespace ZTR.AI.Example.Shared
 
         [Inject] public IJSRuntime JSRuntime { get; set; } = default!;
 
-        private CultureInfo[] cultures = new[]
+        public IReadOnlyCollection<CultureInfo> Cultures = new[]
         {
             new CultureInfo("pl-PL"),
             new CultureInfo("en-US"),
