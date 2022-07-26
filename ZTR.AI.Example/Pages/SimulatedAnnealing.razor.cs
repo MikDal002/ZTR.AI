@@ -58,15 +58,6 @@ namespace ZTR.AI.Example.Pages
         public bool IsRunning { get; private set; }
         public List<(int Step, double X, double Value)> History { get; } = new();
 
-        void OnChange(object value)
-        {
-            //var example = value as SimulatedAnnealingExample;
-            //Debug.Assert(example != null);
-
-            //CurrentExample = example;
-            //StateHasChanged();
-        }
-
         private void StartSimulatedAnnealing()
         {
             IsRunning = true;
@@ -85,25 +76,28 @@ namespace ZTR.AI.Example.Pages
                     {
                         if (Math.Abs(prevTemperature - simualatedAnnealingEngine.WorkingTemperature) > 0.000001)
                         {
-                            prevTemperature = simualatedAnnealingEngine.WorkingTemperature;
-                            CurrentResult = simualatedAnnealingEngine.Result;
-                            CurrentSolution = simualatedAnnealingEngine.CurrentSolution;
-                            History.Add((i, CurrentSolution, CurrentResult));
-                            CurrentIteration = i;
-                            StateHasChanged();
+                            prevTemperature = UpdateView(simualatedAnnealingEngine, i);
                         }
                         await Task.Delay(1);
                     }
                     i++;
                 }
 
-                CurrentResult = simualatedAnnealingEngine.Result;
-                CurrentSolution = simualatedAnnealingEngine.CurrentSolution;
-                CurrentIteration = i;
-                History.Add((i, CurrentSolution, CurrentResult));
                 IsRunning = false;
-                StateHasChanged();
+                UpdateView(simualatedAnnealingEngine, i);
             });
+        }
+
+        private double UpdateView(SimualatedAnnealingEngine simualatedAnnealingEngine, int i)
+        {
+            double prevTemperature;
+            prevTemperature = simualatedAnnealingEngine.WorkingTemperature;
+            CurrentResult = simualatedAnnealingEngine.Result;
+            CurrentSolution = simualatedAnnealingEngine.CurrentSolution;
+            History.Add((i, CurrentSolution, CurrentResult));
+            CurrentIteration = i;
+            StateHasChanged();
+            return prevTemperature;
         }
     }
 }

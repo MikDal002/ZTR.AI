@@ -24,7 +24,7 @@
     <h1>@localizer["SimulatedAnnealing.SinXOptimization"] <RadzenButton id="startButton" Text="Start" Click="StartSimulatedAnnealing" /> </h1>
     
     <div class="card">
-        <RadzenDropDown TValue="SimulatedAnnealingExample" Data="@Examples" @bind-Value="CurrentExample" TextProperty="Name" Change=@(args => OnChange(args)) />
+        <RadzenDropDown TValue="SimulatedAnnealingExample" Data="@Examples" @bind-Value="CurrentExample" TextProperty="Name" />
         @localizer["SimulatedAnnealing.StartEncourage"]
     </div>
     

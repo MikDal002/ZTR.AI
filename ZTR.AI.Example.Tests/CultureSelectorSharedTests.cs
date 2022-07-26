@@ -1,4 +1,3 @@
-using System.Globalization;
 using AngleSharp.Html.Dom;
 using Bunit;
 using FluentAssertions;
@@ -81,6 +80,4 @@ public class CultureSelectorSharedTests
             selector.Change(language.Value);
         }
     }
-
-
 }
