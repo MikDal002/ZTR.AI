@@ -1,5 +1,7 @@
 partial class Build
 {
+    readonly int UnitTestCoverage_Minimum = 100;
+
     Target TestCoverage => _ => _
         .DependsOn(Tests)
         .TriggeredBy(Tests)
@@ -35,6 +37,7 @@ partial class Build
         settings = settings
             .SetAssembly(assemblyPath)
             .SetOutput(coverageResultDirectory + "/")
+            .SetProcessArgumentConfigurator(_ => _.Add(@"--exclude-by-attribute CompilerGeneratedAttribute --exclude-by-attribute GeneratedCodeAttribute"))
             .SetTargetSettings(coverageTestSettings
                 .EnableNoBuild()
                 .SetProjectFile(project));

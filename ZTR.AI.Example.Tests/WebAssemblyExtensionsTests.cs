@@ -6,7 +6,7 @@ using NSubstitute;
 
 namespace ZTR.AI.Example.Tests;
 
-public class WebAssemblyExtensions
+public class WebAssemblyExtensionsTests
 {
     [Test]
     public void SetDefaultCultureAsync_ThrowsArgumentNullException_WhenJSRUntimeArgumentIsNull()

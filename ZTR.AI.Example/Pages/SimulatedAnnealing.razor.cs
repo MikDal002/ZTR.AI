@@ -55,20 +55,22 @@ namespace ZTR.AI.Example.Pages
         public double CurrentSolution { get; private set; }
         public double CurrentResult { get; private set; }
         public double CurrentIteration { get; private set; }
+        public double EndingTemperature { get; set; } = 0.0001;
         public bool IsRunning { get; private set; }
+        public int StartingTemperature { get; set; } = 100;
         public List<(int Step, double X, double Value)> History { get; } = new();
 
-        private void StartSimulatedAnnealing()
+        public async Task StartSimulatedAnnealing()
         {
             IsRunning = true;
-            var simualatedAnnealingEngine = new SimualatedAnnealingEngine(CurrentExample.Function, 100, 0.0001,
+            var simualatedAnnealingEngine = new SimualatedAnnealingEngine(CurrentExample.Function, StartingTemperature, EndingTemperature,
                 minimumSolutionRange: CurrentExample.Min, maximumSolutionRange: CurrentExample.Max);
-            int i = 0;
+            var i = 0;
             History.Clear();
 
-            Task.Run(async () =>
+            await Task.Run(async () =>
             {
-                double prevTemperature = 0.0;
+                var prevTemperature = 0.0;
                 while (!simualatedAnnealingEngine.IsFinished)
                 {
                     simualatedAnnealingEngine.NextStep();
@@ -90,13 +92,12 @@ namespace ZTR.AI.Example.Pages
 
         private double UpdateView(SimualatedAnnealingEngine simualatedAnnealingEngine, int i)
         {
-            double prevTemperature;
-            prevTemperature = simualatedAnnealingEngine.WorkingTemperature;
+            var prevTemperature = simualatedAnnealingEngine.WorkingTemperature;
             CurrentResult = simualatedAnnealingEngine.Result;
             CurrentSolution = simualatedAnnealingEngine.CurrentSolution;
             History.Add((i, CurrentSolution, CurrentResult));
             CurrentIteration = i;
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
             return prevTemperature;
         }
     }

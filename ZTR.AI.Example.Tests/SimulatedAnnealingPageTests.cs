@@ -11,6 +11,7 @@ namespace ZTR.AI.Example.Tests;
 public class SimulatedAnnealingPageTests
 {
     private TestContext _ctx = null!;
+    private IRenderedComponent<Pages.SimulatedAnnealing> _cut;
 
     [SetUp]
     public void Setup()
@@ -18,6 +19,9 @@ public class SimulatedAnnealingPageTests
         _ctx = new Bunit.TestContext();
         _ctx.Services.AddScoped<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
         _ctx.Services.AddScoped<IStringLocalizer<Resource>, StringLocalizer<Resource>>();
+        _ctx.JSInterop.Mode = JSRuntimeMode.Loose;
+        _ctx.JSInterop.Setup<Rect>("Radzen.createChart", _ => true);
+        _cut = _ctx.RenderComponent<Pages.SimulatedAnnealing>();
     }
 
     [TearDown]
@@ -30,17 +34,27 @@ public class SimulatedAnnealingPageTests
     public void FirstBlazor_Test()
     {
         // Arrange
-        _ctx.JSInterop.Mode = JSRuntimeMode.Loose;
-        _ctx.JSInterop.Setup<Rect>("Radzen.createChart", _ => true);
-        var cut = _ctx.RenderComponent<Pages.SimulatedAnnealing>();
-        var buttonElement = cut.Find("#startButton");
+        var buttonElement = _cut.Find("#startButton");
 
         // Act
         buttonElement.Click();
 
         // Assert
-        cut.Instance.IsRunning.Should().BeTrue();
+        _cut.Instance.IsRunning.Should().BeTrue();
     }
 
-    
+    [Test]
+    public async Task FirstBlazor_Test_ForViewModel()
+    {
+        // Arrange
+        _cut.Instance.EndingTemperature = _cut.Instance.StartingTemperature;
+        
+        // Act
+        await _cut.InvokeAsync(() => _cut.Instance.StartSimulatedAnnealing());
+        _cut.WaitForState(() => _cut.Instance.IsRunning == false, TimeSpan.FromSeconds(10));
+
+        // Assert
+        _cut.Instance.IsRunning.Should().BeFalse();
+    }
+
 }

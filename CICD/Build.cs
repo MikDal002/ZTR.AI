@@ -32,7 +32,6 @@ partial class Build : NukeBuild
     [GitVersion(UpdateBuildNumber = true)] readonly GitVersion GitVersion;
 
     #region Tests Data
-    readonly int UnitTestCoverage_Minimum = 69;
     DotNetTestSettings TestSettings => new DotNetTestSettings();
     //.SetResultsDirectory(TestResultDirectory / "results");
     IEnumerable<Project> TestsProjects => Solution.GetProjects("*.Test*");
