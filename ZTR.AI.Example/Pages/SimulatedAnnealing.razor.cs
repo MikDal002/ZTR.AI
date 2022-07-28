@@ -55,29 +55,22 @@ namespace ZTR.AI.Example.Pages
         public double CurrentSolution { get; private set; }
         public double CurrentResult { get; private set; }
         public double CurrentIteration { get; private set; }
+        public double EndingTemperature { get; set; } = 0.0001;
         public bool IsRunning { get; private set; }
+        public int StartingTemperature { get; set; } = 100;
         public List<(int Step, double X, double Value)> History { get; } = new();
 
-        void OnChange(object value)
-        {
-            //var example = value as SimulatedAnnealingExample;
-            //Debug.Assert(example != null);
-
-            //CurrentExample = example;
-            //StateHasChanged();
-        }
-
-        private void StartSimulatedAnnealing()
+        public async Task StartSimulatedAnnealing()
         {
             IsRunning = true;
-            var simualatedAnnealingEngine = new SimualatedAnnealingEngine(CurrentExample.Function, 100, 0.0001,
+            var simualatedAnnealingEngine = new SimualatedAnnealingEngine(CurrentExample.Function, StartingTemperature, EndingTemperature,
                 minimumSolutionRange: CurrentExample.Min, maximumSolutionRange: CurrentExample.Max);
-            int i = 0;
+            var i = 0;
             History.Clear();
 
-            Task.Run(async () =>
+            await Task.Run(async () =>
             {
-                double prevTemperature = 0.0;
+                var prevTemperature = 0.0;
                 while (!simualatedAnnealingEngine.IsFinished)
                 {
                     simualatedAnnealingEngine.NextStep();
@@ -85,25 +78,27 @@ namespace ZTR.AI.Example.Pages
                     {
                         if (Math.Abs(prevTemperature - simualatedAnnealingEngine.WorkingTemperature) > 0.000001)
                         {
-                            prevTemperature = simualatedAnnealingEngine.WorkingTemperature;
-                            CurrentResult = simualatedAnnealingEngine.Result;
-                            CurrentSolution = simualatedAnnealingEngine.CurrentSolution;
-                            History.Add((i, CurrentSolution, CurrentResult));
-                            CurrentIteration = i;
-                            StateHasChanged();
+                            prevTemperature = UpdateView(simualatedAnnealingEngine, i);
                         }
                         await Task.Delay(1);
                     }
                     i++;
                 }
 
-                CurrentResult = simualatedAnnealingEngine.Result;
-                CurrentSolution = simualatedAnnealingEngine.CurrentSolution;
-                CurrentIteration = i;
-                History.Add((i, CurrentSolution, CurrentResult));
                 IsRunning = false;
-                StateHasChanged();
+                UpdateView(simualatedAnnealingEngine, i);
             });
+        }
+
+        private double UpdateView(SimualatedAnnealingEngine simualatedAnnealingEngine, int i)
+        {
+            var prevTemperature = simualatedAnnealingEngine.WorkingTemperature;
+            CurrentResult = simualatedAnnealingEngine.Result;
+            CurrentSolution = simualatedAnnealingEngine.CurrentSolution;
+            History.Add((i, CurrentSolution, CurrentResult));
+            CurrentIteration = i;
+            InvokeAsync(StateHasChanged);
+            return prevTemperature;
         }
     }
 }

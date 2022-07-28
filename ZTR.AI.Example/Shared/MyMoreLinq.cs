@@ -9,4 +9,15 @@ public static class MyMoreLinq
             yield return i;
         }
     }
+
+    public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(action);
+
+        foreach (var element in source)
+        {
+            action(element);
+        }
+    }
 }

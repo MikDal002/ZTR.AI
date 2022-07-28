@@ -41,7 +41,7 @@ public class SimualatedAnnealingEngine
     private int _inTemepratureValue = 0;
     public void NextStep()
     {
-        if (WorkingTemperature <= 0.0 || IsFinished)
+        if (WorkingTemperature <= EndingTemperature || IsFinished)
         {
             IsFinished = true;
             return;
@@ -67,7 +67,6 @@ public class SimualatedAnnealingEngine
         if (_inTemepratureValue > StartingTemperature / WorkingTemperature)
         {
             WorkingTemperature = TemperatureDecreaser(WorkingTemperature);
-            if (WorkingTemperature <= EndingTemperature) IsFinished = true;
             _inTemepratureValue = 0;
         }
         else
