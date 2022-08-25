@@ -2,33 +2,32 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace ZTR.AI.Example.Shared
+namespace ZTR.AI.Example.Shared;
+
+partial class CultureSelector
 {
-    public partial class CultureSelector
+
+    [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+
+    [Inject] public IJSRuntime JSRuntime { get; set; } = default!;
+
+    public IReadOnlyCollection<CultureInfo> Cultures { get; } = new[]
     {
+        new CultureInfo("pl-PL"),
+        new CultureInfo("en-US"),
+    };
 
-        [Inject] public NavigationManager NavigationManager { get; set; } = default!;
-
-        [Inject] public IJSRuntime JSRuntime { get; set; } = default!;
-
-        public IReadOnlyCollection<CultureInfo> Cultures = new[]
+    CultureInfo Culture
+    {
+        get => CultureInfo.CurrentCulture;
+        set
         {
-            new CultureInfo("pl-PL"),
-            new CultureInfo("en-US"),
-        };
-
-        CultureInfo Culture
-        {
-            get => CultureInfo.CurrentCulture;
-            set
+            if (CultureInfo.CurrentCulture != value)
             {
-                if (CultureInfo.CurrentCulture != value)
-                {
-                    var js = (IJSInProcessRuntime)JSRuntime;
-                    js.InvokeVoid("blazorCulture.set", value.Name);
+                var js = (IJSInProcessRuntime)JSRuntime;
+                js.InvokeVoid("blazorCulture.set", value.Name);
 
-                    NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
-                }
+                NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
             }
         }
     }

@@ -21,6 +21,13 @@ public class IndexTests
         _cut = _ctx.RenderComponent<Pages.Index>();
     }
 
+    [TearDown]
+    public void TearDown()
+    {
+        _ctx.Dispose();
+        _cut.Dispose();
+    }
+
     [Test]
     public void IndexPage_ShouldHaveTitle()
     {

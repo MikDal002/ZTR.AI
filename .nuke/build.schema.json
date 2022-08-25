@@ -29,6 +29,7 @@
             "AppVeyor",
             "AzurePipelines",
             "Bamboo",
+            "Bitbucket",
             "Bitrise",
             "GitHubActions",
             "GitLab",
@@ -80,6 +81,7 @@
             "enum": [
               "Clean",
               "Compile",
+              "GenerateTestCoverageReport",
               "Publish",
               "PushToNetlify",
               "Restore",
@@ -100,6 +102,7 @@
             "enum": [
               "Clean",
               "Compile",
+              "GenerateTestCoverageReport",
               "Publish",
               "PushToNetlify",
               "Restore",

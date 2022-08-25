@@ -1,6 +1,6 @@
 using AutoFixture.NUnit3;
 using FluentAssertions;
-using ZTR.AI.Example.Shared;
+using ZTR.AI.Example.Linq;
 
 namespace ZTR.AI.Example.Tests;
 

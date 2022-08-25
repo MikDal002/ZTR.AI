@@ -1,0 +1,5 @@
+root = true
+[*.cs]
+
+# CA1707: Identyfikatory nie powinny zawieraæ znaków podkreœlenia
+dotnet_diagnostic.CA1707.severity = none

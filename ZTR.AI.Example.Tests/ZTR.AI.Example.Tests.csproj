@@ -6,8 +6,10 @@
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
-  </PropertyGroup>
 
+    <AnalysisLevel>latest-all</AnalysisLevel>
+  </PropertyGroup>
+	
   <ItemGroup>
     <PackageReference Include="AutoFixture.NUnit3" Version="4.17.0" />
     <PackageReference Include="FluentAssertions" Version="6.6.0" />

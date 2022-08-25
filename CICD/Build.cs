@@ -1,11 +1,12 @@
-[CheckBuildProjectConfigurations]
+using Nuke.Common.Git;
+
 [ShutdownDotNetAfterServerBuild]
 [GitHubActions(
     "ForPR",
     GitHubActionsImage.WindowsLatest,
     GitHubActionsImage.UbuntuLatest,
     OnPullRequestBranches = new[] { DevelopBranch, MasterBranch },
-    PublishArtifacts = false,
+    PublishArtifacts = false, FetchDepth = 0,
     InvokedTargets = new[] { nameof(Tests) },
     CacheKeyFiles = new[] { "global.json", "source/**/*.csproj" },
     EnableGitHubToken = true)]
@@ -14,7 +15,7 @@
     GitHubActionsImage.WindowsLatest, 
     ImportSecrets = new [] {nameof(NetlifySiteId), nameof(NetlifySiteAccessToken) },
     OnPushBranches = new[] { MasterBranch }, 
-    PublishArtifacts = false,
+    PublishArtifacts = false, FetchDepth = 0,
     InvokedTargets = new[] { nameof(Tests), nameof(PushToNetlify) },
     CacheKeyFiles = new[] { "global.json", "source/**/*.csproj" },
     EnableGitHubToken = true)]
@@ -32,8 +33,7 @@ partial class Build : NukeBuild
     [GitVersion(UpdateBuildNumber = true)] readonly GitVersion GitVersion;
 
     #region Tests Data
-    DotNetTestSettings TestSettings => new DotNetTestSettings();
-    //.SetResultsDirectory(TestResultDirectory / "results");
+    DotNetTestSettings TestSettings => new();
     IEnumerable<Project> TestsProjects => Solution.GetProjects("*.Test*");
     AbsolutePath TestResultDirectory => RootDirectory / "testrestults";
     #endregion

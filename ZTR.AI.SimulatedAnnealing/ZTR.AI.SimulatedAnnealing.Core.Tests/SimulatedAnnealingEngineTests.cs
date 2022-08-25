@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
+using ZTR.AI.Common.Core.RandomEngines;
 
 namespace ZTR.AI.SimulatedAnnealing.Core.Tests;
 
@@ -66,8 +67,10 @@ public class SimulatedAnnealingEngineTests
     [TestCase(-1.0)]
     public void SimmualtedAnnealingEngine_TemperatureMustBeHigherThanZero(double temperature)
     {
+#pragma warning disable CA1806 // Do not ignore method results
         Action action = () => new SimualatedAnnealingEngine(_ => 0, 0, temperature);
         action.Should().Throw<ArgumentOutOfRangeException>();
+#pragma warning restore CA1806 // Do not ignore method results
     }
 
     [Test]
@@ -84,7 +87,7 @@ public class SimulatedAnnealingEngineTests
         sa.Result.Should().Be(100.0);
     }
 
-    [TestCaseSource(nameof(SimpleFunctionsWithErrorMaring))]
+    [TestCaseSource(nameof(_simpleFunctionsWithErrorMargin))]
     [Repeat(5)]
     public void SimulatedAnnealingEngine_ForSimpleFunction_ShouldTakePossibleMaximum(Func<double, double> function, double resultShouldBe, double maxResultMiss)
     {
@@ -97,7 +100,7 @@ public class SimulatedAnnealingEngineTests
         sa.Result.Should().BeApproximately(resultShouldBe, maxResultMiss);
     }
 
-    private static IEnumerable<object> SimpleFunctionsWithErrorMaring = new List<object>()
+    private static readonly IEnumerable<object> _simpleFunctionsWithErrorMargin = new List<object>()
     {
         new object[] {new Func<double, double>(x => x < 0 ? 0 : x), 0, 0.1 },
         new object[] {new Func<double, double>(x => Math.Pow(x, 2.0) ), 0, 0.2 },

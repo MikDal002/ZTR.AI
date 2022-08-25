@@ -1,12 +1,6 @@
-﻿namespace ZTR.AI.SimulatedAnnealing.Core;
+﻿using System.Diagnostics.CodeAnalysis;
 
-public static class RandomEngine
-{
-    public static IRandomEngine GetDefault()
-    {
-        return new SystemRandomEngine();
-    }
-}
+namespace ZTR.AI.Common.Core.RandomEngines;
 
 public static class RandomEngineExtensions
 {
@@ -15,7 +9,7 @@ public static class RandomEngineExtensions
     /// </summary>
     /// <param name="random"></param>
     /// <returns></returns>
-    public static double NextDoubleFromRandomDistribution(this IRandomEngine random)
+    public static double NextDoubleFromRandomDistribution([NotNull] this IRandomEngine random)
     {
         return random.NextDouble() * 2.0 - 1.0;
     }

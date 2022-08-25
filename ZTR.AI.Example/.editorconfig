@@ -1,0 +1,5 @@
+[*.{cs,vb}]
+dotnet_diagnostic.CA1716.severity = none
+
+# CA2007: Rozwa¿ wywo³anie metody ConfigureAwait w zadaniu, na które siê oczekuje
+dotnet_diagnostic.CA2007.severity = silent

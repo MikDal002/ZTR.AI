@@ -14,7 +14,7 @@ partial class Build
     {
         try
         {
-            Process p = new Process
+            var p = new Process
             {
                 StartInfo =
                 {

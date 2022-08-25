@@ -21,7 +21,14 @@ partial class Build
                         ref previousCoverageFileResult)
                 )
             );
+        });
 
+    Target GenerateTestCoverageReport => _ => _
+        .AssuredAfterFailure()
+        .DependsOn(TestCoverage)
+        .TriggeredBy(TestCoverage)
+        .Executes(() =>
+        {
             ReportGeneratorTasks.ReportGenerator(s => s
                 .SetTargetDirectory(TestResultDirectory / "report")
                 .SetFramework("net6.0")

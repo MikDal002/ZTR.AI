@@ -2,13 +2,15 @@ using System.Globalization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
 
+namespace ZTR.AI.Example;
+
 public static class WebAssemblyHostExtension
 {
     public static async Task SetDefaultCultureAsync(IJSRuntime jsInterop)
     {
         ArgumentNullException.ThrowIfNull(jsInterop);
 
-        var result = await jsInterop.InvokeAsync<string>("blazorCulture.get");
+        var result = await jsInterop.InvokeAsync<string>("blazorCulture.get").ConfigureAwait(false);
 
         CultureInfo culture;
         if (!string.IsNullOrWhiteSpace(result)) culture = new CultureInfo(result);
@@ -23,6 +25,6 @@ public static class WebAssemblyHostExtension
         ArgumentNullException.ThrowIfNull(host);
 
         var jsInterop = host.Services.GetRequiredService<IJSRuntime>();
-        await SetDefaultCultureAsync(jsInterop);
+        await SetDefaultCultureAsync(jsInterop).ConfigureAwait(false);
     }
 }
