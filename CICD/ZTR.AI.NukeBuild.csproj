@@ -12,13 +12,9 @@
 
   <ItemGroup>
     <PackageDownload Include="ReportGenerator" Version="[5.1.6]" />
-    <PackageReference Include="Nuke.Common" Version="6.0.3" />
+    <PackageReference Include="NetlifySharp" Version="1.1.1" />
+    <PackageReference Include="Nuke.Common" Version="6.2.1" />
     <PackageDownload Include="coverlet.console" Version="[3.1.2]" />
     <PackageDownload Include="GitVersion.Tool" Version="[5.8.0]" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\3rd\NetlifySharp\src\NetlifySharp\NetlifySharp.csproj" />
-  </ItemGroup>
-
 </Project>
