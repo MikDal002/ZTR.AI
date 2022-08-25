@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Transactions;
+using ZTR.AI.Common.Core.RandomEngines;
+// ReSharper disable All
 
 namespace ZTR.AI.SimulatedAnnealing.Core;
 
@@ -24,8 +25,10 @@ public class SimualatedAnnealingEngine
         MinimumSolutionRange = minimumSolutionRange;
         MaximumSolutionRange = maximumSolutionRange;
         TemperatureDecreaser = temperatureDecreaser ?? (temp => 0.95 * temp);
-        _random = randomEngine ?? RandomEngine.GetDefault();
+        _random = randomEngine ?? RandomEngine.Default;
         CurrentSolution = 0.0;
+        Result = double.PositiveInfinity;
+        _inTemepratureValue = 0;
     }
 
     public double StartingTemperature { get; }
@@ -37,8 +40,8 @@ public class SimualatedAnnealingEngine
     public double MaximumSolutionRange { get; }
     public Func<double, double> TemperatureDecreaser { get; }
     public bool IsFinished { get; private set; }
-    public double Result { get; private set; } = double.PositiveInfinity;
-    private int _inTemepratureValue = 0;
+    public double Result { get; private set; }
+    private int _inTemepratureValue;
     public void NextStep()
     {
         if (WorkingTemperature <= EndingTemperature || IsFinished)

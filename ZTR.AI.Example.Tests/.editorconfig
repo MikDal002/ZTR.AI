@@ -1,0 +1,6 @@
+[*Tests.{cs,vb}]
+dotnet_diagnostic.CA1001.severity = none
+dotnet_diagnostic.CA2007.severity = none
+
+[TestNav.{cs,vb}]
+dotnet_diagnostic.CA1812.severity = none

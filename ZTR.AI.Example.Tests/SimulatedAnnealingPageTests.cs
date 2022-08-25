@@ -11,7 +11,7 @@ namespace ZTR.AI.Example.Tests;
 public class SimulatedAnnealingPageTests
 {
     private TestContext _ctx = null!;
-    private IRenderedComponent<Pages.SimulatedAnnealing> _cut;
+    private IRenderedComponent<Pages.SimulatedAnnealingPage> _cut;
 
     [SetUp]
     public void Setup()
@@ -21,7 +21,7 @@ public class SimulatedAnnealingPageTests
         _ctx.Services.AddScoped<IStringLocalizer<Resource>, StringLocalizer<Resource>>();
         _ctx.JSInterop.Mode = JSRuntimeMode.Loose;
         _ctx.JSInterop.Setup<Rect>("Radzen.createChart", _ => true);
-        _cut = _ctx.RenderComponent<Pages.SimulatedAnnealing>();
+        _cut = _ctx.RenderComponent<Pages.SimulatedAnnealingPage>();
     }
 
     [TearDown]

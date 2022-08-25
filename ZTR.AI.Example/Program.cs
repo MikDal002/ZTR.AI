@@ -1,3 +1,4 @@
+#pragma warning disable CA1812
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ZTR.AI.Example;
@@ -13,3 +14,4 @@ builder.Services.AddLocalization();
 var app = builder.Build();
 await app.SetDefaultCultureAsync();
 await app.RunAsync();
+#pragma warning restore CA1812

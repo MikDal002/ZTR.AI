@@ -1,4 +1,7 @@
-﻿namespace ZTR.AI.Example.Shared;
+﻿using System;
+using System.Collections.Generic;
+
+namespace ZTR.AI.Example.Linq;
 
 public static class MyMoreLinq
 {

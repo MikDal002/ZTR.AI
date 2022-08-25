@@ -1,4 +1,4 @@
-﻿namespace ZTR.AI.SimulatedAnnealing.Core;
+﻿namespace ZTR.AI.Common.Core.RandomEngines;
 
 public class ConstRandomEngine : IRandomEngine
 {

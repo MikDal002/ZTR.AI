@@ -5,15 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-namespace ZTR.AI.Common.Core.Tests
-{
+namespace ZTR.AI.Common.Core.Tests;
 
-    internal class TestExample
+public class TestExample
+{
+    [Test]
+    public void METHOD()
     {
-        [Test]
-        public void METHOD()
-        {
-            Assert.Pass();
-        }
+        Assert.Pass();
     }
 }
