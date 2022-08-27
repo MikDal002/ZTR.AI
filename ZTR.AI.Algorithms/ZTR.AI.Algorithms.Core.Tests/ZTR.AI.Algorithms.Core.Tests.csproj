@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <AnalysisLevel>latest-all</AnalysisLevel>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -34,7 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ZTR.AI.Common\ZTR.AI.Common.Core\ZTR.AI.Common.Core.csproj" />
-    <ProjectReference Include="..\ZTR.AI.SimulatedAnnealing.Core\ZTR.AI.SimulatedAnnealing.Core.csproj" />
+    <ProjectReference Include="..\ZTR.AI.Algorithms.Core\ZTR.AI.Algorithms.Core.csproj" />
   </ItemGroup>
 
 </Project>

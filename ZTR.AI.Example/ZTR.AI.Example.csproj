@@ -7,6 +7,7 @@
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
 	<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
 	<AnalysisLevel>latest-all</AnalysisLevel>
+	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -29,7 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ZTR.AI.SimulatedAnnealing\ZTR.AI.SimulatedAnnealing.Core\ZTR.AI.SimulatedAnnealing.Core.csproj" />
+    <ProjectReference Include="..\ZTR.AI.Algorithms\ZTR.AI.Algorithms.Core\ZTR.AI.Algorithms.Core.csproj" />
+    <ProjectReference Include="..\ZTR.AI.SimulatedAnnealing\ZTR.AI.SimulatedAnnealing.Core\ZTR.AI.Algorithms.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -8,6 +8,8 @@
     <IsPackable>false</IsPackable>
 
     <AnalysisLevel>latest-all</AnalysisLevel>
+
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
 	
   <ItemGroup>

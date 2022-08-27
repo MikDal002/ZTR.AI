@@ -64,7 +64,7 @@ public partial class SimulatedAnnealingPage
     public async Task StartSimulatedAnnealing()
     {
         IsRunning = true;
-        var simualatedAnnealingEngine = new SimualatedAnnealingEngine(CurrentExample.Function, StartingTemperature, EndingTemperature,
+        var simulatedAnnealingEngine = new SimulatedAnnealingEngine(CurrentExample.Function, StartingTemperature, EndingTemperature,
             minimumSolutionRange: CurrentExample.Min, maximumSolutionRange: CurrentExample.Max);
         var i = 0;
         History.Clear();
@@ -72,14 +72,14 @@ public partial class SimulatedAnnealingPage
         await Task.Run(async () =>
         {
             var prevTemperature = 0.0;
-            while (!simualatedAnnealingEngine.IsFinished)
+            while (!simulatedAnnealingEngine.IsFinished)
             {
-                simualatedAnnealingEngine.NextStep();
+                simulatedAnnealingEngine.NextStep();
                 if (i % 100 == 0)
                 {
-                    if (Math.Abs(prevTemperature - simualatedAnnealingEngine.WorkingTemperature) > 0.000001)
+                    if (Math.Abs(prevTemperature - simulatedAnnealingEngine.PositionProvider.WorkingTemperature) > 0.000001)
                     {
-                        prevTemperature = UpdateView(simualatedAnnealingEngine, i);
+                        prevTemperature = UpdateView(simulatedAnnealingEngine, i);
                     }
                     await Task.Delay(1).ConfigureAwait(false);
                 }
@@ -87,15 +87,15 @@ public partial class SimulatedAnnealingPage
             }
 
             IsRunning = false;
-            UpdateView(simualatedAnnealingEngine, i);
+            UpdateView(simulatedAnnealingEngine, i);
         }).ConfigureAwait(false);
     }
 
-    private double UpdateView(SimualatedAnnealingEngine simualatedAnnealingEngine, int i)
+    private double UpdateView(SimulatedAnnealingEngine simulatedAnnealingEngine, int i)
     {
-        var prevTemperature = simualatedAnnealingEngine.WorkingTemperature;
-        CurrentResult = simualatedAnnealingEngine.Result;
-        CurrentSolution = simualatedAnnealingEngine.CurrentSolution;
+        var prevTemperature = simulatedAnnealingEngine.PositionProvider.WorkingTemperature;
+        CurrentResult = simulatedAnnealingEngine.Result;
+        CurrentSolution = simulatedAnnealingEngine.CurrentSolution;
         History.Add((i, CurrentSolution, CurrentResult));
         CurrentIteration = i;
         InvokeAsync(StateHasChanged);
