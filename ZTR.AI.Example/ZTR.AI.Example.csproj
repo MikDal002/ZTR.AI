@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ZTR.AI.Algorithms\ZTR.AI.Algorithms.Core\ZTR.AI.Algorithms.Core.csproj" />
-    <ProjectReference Include="..\ZTR.AI.SimulatedAnnealing\ZTR.AI.SimulatedAnnealing.Core\ZTR.AI.Algorithms.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

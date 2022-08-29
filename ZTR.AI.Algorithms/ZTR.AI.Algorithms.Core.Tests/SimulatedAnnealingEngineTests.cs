@@ -2,48 +2,32 @@ using FluentAssertions;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using ZTR.AI.Algorithms.Core.GreedyAlgorithms;
 using ZTR.AI.Common.Core.RandomEngines;
 
 namespace ZTR.AI.SimulatedAnnealing.Core.Tests;
-public class GreedyEngineForSingleDiemensionalTests
+
+
+public class TemperatureKeepAndDownPositionProviderTests
 {
     [Test]
-    public void GreedyEngineForSingleDimensional_ShouldBeConstructibleForDefaultArguments()
+    public void TemperatureKeepAndDownPositionProvider_HasTheSameWorkingTemperatureAsStartingTemperature_AtTheBegining([Range(0.1, 100.0, 1)] double temperature)
     {
-        var cut = new GreedyEngineForSingleDimensional(_ => 0);
-        cut.Should().NotBeNull();
+        var sa = new TemperatureKeepAndDownPositionProvider(temperature);
+        sa.WorkingTemperature.Should().Be(temperature);
     }
 
     [Test]
-    public void Test_OfTests([Range(-100, 100.0, 5)] double expectedOutcome)
+    public void TemperatureKeepAndDownPositionProvider_DecreasesTemperatureOnEveryStep_UntilFinish([Range(-5, 5, 1)] double currentSolution, [Range(-5, 5, 1)] double min, [Range(-5, 5, 1)] double max)
     {
-        var cut = new GreedyEngineForSingleDimensional(_ => expectedOutcome);
+        var cut = new TemperatureKeepAndDownPositionProvider(100);
         while (!cut.IsFinished)
         {
-            cut.NextStep();
-        }
-        cut.Result.Should().Be(expectedOutcome);
-    }
-
-    [TestCaseSource(nameof(SimpleFunctionsWithErrorMargin))]
-    [Repeat(5)]
-    public void Greedy_ForSimpleFunction_ShouldTakePossibleMaximum(Func<double, double> function,
-        double resultShouldBe, double maxResultMiss)
-    {
-        var cut = new GreedyEngineForSingleDimensional(function);
-
-        while (!cut.IsFinished)
-        {
-            cut.NextStep();
+            cut.GetNextPosition(currentSolution, max, min);
         }
 
-        cut.Result.Should().BeApproximately(resultShouldBe, maxResultMiss);
+        cut.WorkingTemperature.Should().BeLessOrEqualTo(0.1);
     }
-
-    private static readonly IEnumerable<object> SimpleFunctionsWithErrorMargin = TestFunctions.SimpleFunctionsWithErrorMargin;
 }
-
 
 public class SimulatedAnnealingEngineTests
 {
@@ -52,25 +36,6 @@ public class SimulatedAnnealingEngineTests
     {
         var sa = new SimulatedAnnealingEngine(_ => 0.0, 1);
         sa.Should().NotBeNull();
-    }
-
-    [Test]
-    public void SimulatedAnnealingEngine_HasTheSameWorkingTemperatureAsStartingTemperature_AtTheBegining([Range(0.1, 100.0, 1)] double temperature)
-    {
-        var sa = new SimulatedAnnealingEngine(_ => 0.0, temperature);
-        sa.PositionProvider.WorkingTemperature.Should().Be(temperature);
-    }
-
-    [Test]
-    public void SimulatedAnnealingEngine_DecreasesTemperatureOnEveryStep_UntilFinish()
-    {
-        var sa = new SimulatedAnnealingEngine(_ => 0.0, 100, 0.1);
-        while (!sa.IsFinished)
-        {
-            sa.NextStep();
-        }
-
-        sa.PositionProvider.WorkingTemperature.Should().BeLessOrEqualTo(0.1);
     }
 
     [Test]

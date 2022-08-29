@@ -10,7 +10,7 @@ public static class WebAssemblyHostExtension
     {
         ArgumentNullException.ThrowIfNull(jsInterop);
 
-        var result = await jsInterop.InvokeAsync<string>("blazorCulture.get").ConfigureAwait(false);
+        var result = await jsInterop.InvokeAsync<string>("blazorCulture.get");
 
         CultureInfo culture;
         if (!string.IsNullOrWhiteSpace(result)) culture = new CultureInfo(result);
@@ -25,6 +25,6 @@ public static class WebAssemblyHostExtension
         ArgumentNullException.ThrowIfNull(host);
 
         var jsInterop = host.Services.GetRequiredService<IJSRuntime>();
-        await SetDefaultCultureAsync(jsInterop).ConfigureAwait(false);
+        await SetDefaultCultureAsync(jsInterop);
     }
 }
