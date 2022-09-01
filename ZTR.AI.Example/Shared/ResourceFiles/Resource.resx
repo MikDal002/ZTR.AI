@@ -126,34 +126,37 @@
   <data name="welcome" xml:space="preserve">
     <value>Welcome to your new app</value>
   </data>
-  <data name="SimulatedAnnealing.SinXOptimization" xml:space="preserve">
-    <value>Finding function minimum</value>
-  </data>
-  <data name="SimulatedAnnealing.StartEncourage" xml:space="preserve">
+  <data name="Common.StartEncourage" xml:space="preserve">
     <value>Click above start button to begin the simulaiton in real time.</value>
   </data>
-  <data name="SimulatedAnnealing.CurrentBestSolution" xml:space="preserve">
+  <data name="Common.CurrentBestSolution" xml:space="preserve">
     <value>Current best solution (x value): {0}</value>
   </data>
-  <data name="SimulatedAnnealing.CurrentBestResult" xml:space="preserve">
+  <data name="Common.CurrentBestResult" xml:space="preserve">
     <value>Value of best solution (y value): {0}</value>
   </data>
   <data name="Common.Calculating" xml:space="preserve">
     <value>Calculating...</value>
   </data>
-  <data name="SimulatedAnnealing.BestResult" xml:space="preserve">
+  <data name="Common.BestResult" xml:space="preserve">
     <value>Best result after {0} iteration:</value>
   </data>
-  <data name="SimulatedAnnealing.CurrentResult" xml:space="preserve">
+  <data name="Common.CurrentResult" xml:space="preserve">
     <value>Result after {0} iteration:</value>
   </data>
-  <data name="SimulatedAnnealing.XParameter" xml:space="preserve">
+  <data name="Common.XParameter" xml:space="preserve">
     <value>X parameter</value>
   </data>
-  <data name="SimulatedAnnealing.StepNo" xml:space="preserve">
+  <data name="Common.StepNo" xml:space="preserve">
     <value>Iteration</value>
   </data>
-  <data name="SimulatedAnnealing.IterationValue" xml:space="preserve">
+  <data name="Common.IterationValue" xml:space="preserve">
     <value>Value</value>
+  </data>
+  <data name="Common.SelectFunctionToOptimize" xml:space="preserve">
+    <value>Select function to find its minimum</value>
+  </data>
+  <data name="Greedy" xml:space="preserve">
+    <value>Greedy algorithm</value>
   </data>
 </root>

@@ -1,62 +1,20 @@
 using System.Diagnostics;
-using ZTR.AI.Example.Linq;
-using ZTR.AI.Example.Shared;
 using ZTR.AI.SimulatedAnnealing.Core;
 
 namespace ZTR.AI.Example.Pages;
 
-public class SimulatedAnnealingExample
-{
-    public static SimulatedAnnealingExample Sin { get; } = new()
-    {
-        Name = "Sin",
-        Function = Math.Sin,
-        Step = 0.1,
-        Min = -Math.PI * 1.1,
-        Max = Math.PI * 1.1
-    };
-
-    public static SimulatedAnnealingExample Cos { get; } = new()
-    {
-        Name = "Cos",
-        Function = Math.Cos,
-        Step = 0.1,
-        Min = -Math.PI * 1.1,
-        Max = Math.PI * 1.1
-    };
-
-    public static SimulatedAnnealingExample ShortExponental { get; } = new()
-    {
-        Name = "Sinus&Exponental",
-        Function = x => -(x + Math.Sin(x)) * Math.Exp(-Math.Pow(x, 2.0)),
-        Step = 0.1,
-        Min = -Math.PI * 1.1,
-        Max = Math.PI * 1.1
-    };
-
-
-    public string Name { get; init; } = string.Empty;
-    public IEnumerable<DataItem> DrawingData =>
-        MyMoreLinq.Range(Min, Max, Step).Select(d => new DataItem(d, Function(d)));
-
-    public Func<double, double> Function { get; init; } = _ =>  0.0;
-    public double Step { get; init; } = 0.1;
-    public double Min { get; init; } = -Math.PI;
-    public double Max { get; init; } = Math.PI;
-}
-
 public partial class SimulatedAnnealingPage
 {
-    public IEnumerable<SimulatedAnnealingExample> Examples { get; } = new[]
+    public IEnumerable<SingleDimensionalExample> Examples { get; } = new[]
     {
-        SimulatedAnnealingExample.Sin, SimulatedAnnealingExample.Cos,  SimulatedAnnealingExample.ShortExponental, 
+        SingleDimensionalExample.Sin, SingleDimensionalExample.Cos,  SingleDimensionalExample.ShortExponental, 
     };
-    public SimulatedAnnealingExample CurrentExample { get; private set; } = SimulatedAnnealingExample.Cos;
+    public SingleDimensionalExample CurrentExample { get; private set; } = SingleDimensionalExample.Cos;
 
     public double CurrentSolution { get; private set; }
     public double CurrentResult { get; private set; }
     public double CurrentIteration { get; private set; }
-    public double EndingTemperature { get; set; } = 0.0001;
+    public double EndingTemperature { get; set; } = 0.1;
     public bool IsRunning { get; private set; }
     public int StartingTemperature { get; set; } = 100;
     private List<(int Step, double X, double Value)> History { get; } = new();
@@ -66,29 +24,31 @@ public partial class SimulatedAnnealingPage
         IsRunning = true;
         var simulatedAnnealingEngine = new SimulatedAnnealingEngine(CurrentExample.Function, StartingTemperature, EndingTemperature,
             minimumSolutionRange: CurrentExample.Min, maximumSolutionRange: CurrentExample.Max);
-        var i = 0;
         History.Clear();
 
-        await Task.Run(async () =>
-        {
-            var prevTemperature = 0.0;
-            while (!simulatedAnnealingEngine.IsFinished)
-            {
-                simulatedAnnealingEngine.NextStep();
-                if (i % 100 == 0)
-                {
-                    if (Math.Abs(prevTemperature - simulatedAnnealingEngine.PositionProvider.WorkingTemperature) > 0.000001)
-                    {
-                        prevTemperature = UpdateView(simulatedAnnealingEngine, i);
-                    }
-                    await Task.Delay(1).ConfigureAwait(false);
-                }
-                i++;
-            }
+        await PerformAlgorithmAsync(simulatedAnnealingEngine).ConfigureAwait(false);
+    }
 
-            IsRunning = false;
-            UpdateView(simulatedAnnealingEngine, i);
-        }).ConfigureAwait(false);
+    private async Task PerformAlgorithmAsync(SimulatedAnnealingEngine simulatedAnnealingEngine)
+    {
+        var prevTemperature = 0.0;
+        var i = 0;
+        while (!simulatedAnnealingEngine.IsFinished)
+        {
+            simulatedAnnealingEngine.NextStep();
+            if (i % 100 == 0)
+            {
+                if (Math.Abs(prevTemperature - simulatedAnnealingEngine.PositionProvider.WorkingTemperature) > 0.000001)
+                {
+                    prevTemperature = UpdateView(simulatedAnnealingEngine, i);
+                }
+                await Task.Delay(1).ConfigureAwait(false);
+            }
+            i++;
+        }
+
+        IsRunning = false;
+        UpdateView(simulatedAnnealingEngine, i);
     }
 
     private double UpdateView(SimulatedAnnealingEngine simulatedAnnealingEngine, int i)

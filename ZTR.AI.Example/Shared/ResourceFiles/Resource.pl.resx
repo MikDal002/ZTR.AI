@@ -106,34 +106,37 @@
   <data name="welcome" xml:space="preserve">
     <value>Witaj w twojej nowej aplikacji</value>
   </data>
-  <data name="SimulatedAnnealing.SinXOptimization" xml:space="preserve">
-    <value>Znajdowanie minimum funkcji</value>
-  </data>
-  <data name="SimulatedAnnealing.StartEncourage" xml:space="preserve">
+  <data name="Common.StartEncourage" xml:space="preserve">
     <value>Kliknij powyższy przycisk start, aby rozpocząć symulację w czasie rzeczywistym.</value>
   </data>
-  <data name="SimulatedAnnealing.CurrentBestSolution" xml:space="preserve">
+  <data name="Common.CurrentBestSolution" xml:space="preserve">
     <value>Bieżące rozwiązanie (wartość x): {0}</value>
   </data>
-  <data name="SimulatedAnnealing.CurrentBestResult" xml:space="preserve">
+  <data name="Common.CurrentBestResult" xml:space="preserve">
     <value>Wartość bieżącego rozwiązania (wartość y): {0}</value>
   </data>
   <data name="Common.Calculating" xml:space="preserve">
     <value>Obliczanie...</value>
   </data>
-  <data name="SimulatedAnnealing.BestResult" xml:space="preserve">
+  <data name="Common.BestResult" xml:space="preserve">
     <value>Najlepszy wynik po {0} iteracji:</value>
   </data>
-  <data name="SimulatedAnnealing.CurrentResult" xml:space="preserve">
+  <data name="Common.CurrentResult" xml:space="preserve">
     <value>Wynik po {0} iteracji:</value>
   </data>
-  <data name="SimulatedAnnealing.XParameter" xml:space="preserve">
+  <data name="Common.XParameter" xml:space="preserve">
     <value>Parametr X</value>
   </data>
-  <data name="SimulatedAnnealing.StepNo" xml:space="preserve">
+  <data name="Common.StepNo" xml:space="preserve">
     <value>Iteracja</value>
   </data>
-  <data name="SimulatedAnnealing.IterationValue" xml:space="preserve">
+  <data name="Common.IterationValue" xml:space="preserve">
     <value>Wartość</value>
+  </data>
+  <data name="Common.SelectFunctionToOptimize" xml:space="preserve">
+    <value>Wybierz funkcję do znalezienia jej minimum</value>
+  </data>
+  <data name="Greedy" xml:space="preserve">
+    <value>Algorytm zachłanny</value>
   </data>
 </root>

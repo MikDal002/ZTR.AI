@@ -51,7 +51,7 @@ namespace ZTR.AI.SimulatedAnnealing.Core
         {
             if (IsFinished) return;
 
-                double proposedPosition = PositionProvider.GetNextPosition(CurrentSolution, MaximumSolutionRange, MinimumSolutionRange);
+            var proposedPosition = PositionProvider.GetNextPosition(CurrentSolution, MaximumSolutionRange, MinimumSolutionRange);
 
             var proposedResult = _functionToOptimize(proposedPosition);
             if (proposedResult <= Result)

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
-using ZTR.AI.Algorithms.Core.GreedyAlgorithms;
+using ZTR.AI.Algorithms.Core;
 
 namespace ZTR.AI.SimulatedAnnealing.Core.Tests
 {
