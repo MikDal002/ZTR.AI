@@ -1,9 +1,9 @@
-﻿@page "/SimulatedAnnealing"
+﻿@page "/Greedy"
 @using System.Runtime.InteropServices
 
 @inject IStringLocalizer<Resource> localizer;
 
-<PageTitle>@localizer["SimulatedAnnealing"]</PageTitle>
+<PageTitle>@localizer["Greedy"]</PageTitle>
 
 <div class="row">
     <h2>Things to do: </h2>
@@ -27,8 +27,9 @@
         <RadzenDropDown TValue="SingleDimensionalExample" Data="@Examples" @bind-Value="CurrentExample" TextProperty="Name" />
         @localizer["Common.StartEncourage"]
     </div>
+    
 
-    <RadzenChart>
+<RadzenChart>
         <RadzenLineSeries Data="@CurrentExample.DrawingData" CategoryProperty="X" ValueProperty="Y">
             <RadzenChartTooltipOptions Visible="false" />
         </RadzenLineSeries>

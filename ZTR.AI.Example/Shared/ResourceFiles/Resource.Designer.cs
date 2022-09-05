@@ -61,11 +61,101 @@ namespace ZTR.AI.Example.Shared.ResourceFiles {
         }
         
         /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Best result after {0} iteration:.
+        /// </summary>
+        public static string Common_BestResult {
+            get {
+                return ResourceManager.GetString("Common.BestResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Wyszukuje zlokalizowany ciąg podobny do ciągu Calculating....
         /// </summary>
         public static string Common_Calculating {
             get {
                 return ResourceManager.GetString("Common.Calculating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Value of best solution (y value): {0}.
+        /// </summary>
+        public static string Common_CurrentBestResult {
+            get {
+                return ResourceManager.GetString("Common.CurrentBestResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Current best solution (x value): {0}.
+        /// </summary>
+        public static string Common_CurrentBestSolution {
+            get {
+                return ResourceManager.GetString("Common.CurrentBestSolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Result after {0} iteration:.
+        /// </summary>
+        public static string Common_CurrentResult {
+            get {
+                return ResourceManager.GetString("Common.CurrentResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Value.
+        /// </summary>
+        public static string Common_IterationValue {
+            get {
+                return ResourceManager.GetString("Common.IterationValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Select function to find its minimum.
+        /// </summary>
+        public static string Common_SelectFunctionToOptimize {
+            get {
+                return ResourceManager.GetString("Common.SelectFunctionToOptimize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Click above start button to begin the simulaiton in real time..
+        /// </summary>
+        public static string Common_StartEncourage {
+            get {
+                return ResourceManager.GetString("Common.StartEncourage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Iteration.
+        /// </summary>
+        public static string Common_StepNo {
+            get {
+                return ResourceManager.GetString("Common.StepNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu X parameter.
+        /// </summary>
+        public static string Common_XParameter {
+            get {
+                return ResourceManager.GetString("Common.XParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Greedy algorithm.
+        /// </summary>
+        public static string Greedy {
+            get {
+                return ResourceManager.GetString("Greedy", resourceCulture);
             }
         }
         
@@ -84,87 +174,6 @@ namespace ZTR.AI.Example.Shared.ResourceFiles {
         public static string SimulatedAnnealing {
             get {
                 return ResourceManager.GetString("SimulatedAnnealing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Best result after {0} iteration:.
-        /// </summary>
-        public static string SimulatedAnnealing_BestResult {
-            get {
-                return ResourceManager.GetString("SimulatedAnnealing.BestResult", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Value of best solution (y value): {0}.
-        /// </summary>
-        public static string SimulatedAnnealing_CurrentBestResult {
-            get {
-                return ResourceManager.GetString("SimulatedAnnealing.CurrentBestResult", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Current best solution (x value): {0}.
-        /// </summary>
-        public static string SimulatedAnnealing_CurrentBestSolution {
-            get {
-                return ResourceManager.GetString("SimulatedAnnealing.CurrentBestSolution", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Result after {0} iteration:.
-        /// </summary>
-        public static string SimulatedAnnealing_CurrentResult {
-            get {
-                return ResourceManager.GetString("SimulatedAnnealing.CurrentResult", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Value.
-        /// </summary>
-        public static string SimulatedAnnealing_IterationValue {
-            get {
-                return ResourceManager.GetString("SimulatedAnnealing.IterationValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Finding function minimum.
-        /// </summary>
-        public static string SimulatedAnnealing_SinXOptimization {
-            get {
-                return ResourceManager.GetString("SimulatedAnnealing.SinXOptimization", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Click above start button to begin the simulaiton in real time..
-        /// </summary>
-        public static string SimulatedAnnealing_StartEncourage {
-            get {
-                return ResourceManager.GetString("SimulatedAnnealing.StartEncourage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Iteration.
-        /// </summary>
-        public static string SimulatedAnnealing_StepNo {
-            get {
-                return ResourceManager.GetString("SimulatedAnnealing.StepNo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu X parameter.
-        /// </summary>
-        public static string SimulatedAnnealing_XParameter {
-            get {
-                return ResourceManager.GetString("SimulatedAnnealing.XParameter", resourceCulture);
             }
         }
         

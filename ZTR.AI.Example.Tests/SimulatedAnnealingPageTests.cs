@@ -31,7 +31,7 @@ public class SimulatedAnnealingPageTests
     }
 
     [Test]
-    public void FirstBlazor_Test()
+    public void StartButton_ShouldStartAlgorithm()
     {
         // Arrange
         var buttonElement = _cut.Find("#startButton");
@@ -44,17 +44,16 @@ public class SimulatedAnnealingPageTests
     }
 
     [Test]
-    public async Task FirstBlazor_Test_ForViewModel()
+    public async Task Algorithm_ShouldStop_WhenFinished()
     {
         // Arrange
         _cut.Instance.EndingTemperature = _cut.Instance.StartingTemperature;
         
         // Act
-        await _cut.InvokeAsync(() => _cut.Instance.StartSimulatedAnnealing());
+        await _cut.InvokeAsync(() => _cut.Instance.Start());
         _cut.WaitForState(() => _cut.Instance.IsRunning == false, TimeSpan.FromSeconds(10));
 
         // Assert
         _cut.Instance.IsRunning.Should().BeFalse();
     }
-
 }
