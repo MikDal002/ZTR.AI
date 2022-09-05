@@ -21,7 +21,7 @@
 </div>
 
 <div class="row">
-    <h1>@localizer["Common.SelectFunctionToOptimize"] <RadzenButton id="startButton" Text="Start" Click="() => StartGreedy()" /> </h1>
+    <h1>@localizer["Common.SelectFunctionToOptimize"] <RadzenButton id="startButton" Text="Start" Click="() => Start()" /> </h1>
     
     <div class="card">
         <RadzenDropDown TValue="SingleDimensionalExample" Data="@Examples" @bind-Value="CurrentExample" TextProperty="Name" />

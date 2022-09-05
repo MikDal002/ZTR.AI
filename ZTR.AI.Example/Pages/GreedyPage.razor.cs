@@ -4,10 +4,8 @@ namespace ZTR.AI.Example.Pages;
 
 public partial class GreedyPage
 {
-    public IEnumerable<SingleDimensionalExample> Examples { get; } = new[]
-    {
-        SingleDimensionalExample.Sin, SingleDimensionalExample.Cos,  SingleDimensionalExample.ShortExponental,
-    };
+
+    public IReadOnlyCollection<SingleDimensionalExample> Examples { get; } = SingleDimensionalExample.AllExamples;
     public SingleDimensionalExample CurrentExample { get; private set; } = SingleDimensionalExample.Cos;
 
     public double CurrentSolution { get; private set; }
@@ -16,17 +14,18 @@ public partial class GreedyPage
     public bool IsRunning { get; private set; }
     private List<(int Step, double X, double Value)> History { get; } = new();
 
-    public async Task StartGreedy()
+    public async Task Start()
     {
         IsRunning = true;
-        var greedyEngine = new GreedyEngineForSingleDimensional(CurrentExample.Function, minimumSolutionRange: CurrentExample.Min, maximumSolutionRange: CurrentExample.Max);
         History.Clear();
 
-        await PerformAlgorithm(greedyEngine).ConfigureAwait(false);
+        await PerformAlgorithm().ConfigureAwait(false);
     }
 
-    private async Task PerformAlgorithm(GreedyEngineForSingleDimensional greedyEngine)
+    private async Task PerformAlgorithm()
     {
+        var greedyEngine = new GreedyEngineForSingleDimensional(CurrentExample.Function, minimumSolutionRange: CurrentExample.Min, maximumSolutionRange: CurrentExample.Max);
+
         var i = 0;
         while (!greedyEngine.IsFinished)
         {

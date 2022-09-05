@@ -5,32 +5,31 @@ namespace ZTR.AI.Example.Pages;
 
 public partial class SimulatedAnnealingPage
 {
-    public IEnumerable<SingleDimensionalExample> Examples { get; } = new[]
-    {
-        SingleDimensionalExample.Sin, SingleDimensionalExample.Cos,  SingleDimensionalExample.ShortExponental, 
-    };
+    public IReadOnlyCollection<SingleDimensionalExample> Examples { get; } = SingleDimensionalExample.AllExamples;
     public SingleDimensionalExample CurrentExample { get; private set; } = SingleDimensionalExample.Cos;
 
     public double CurrentSolution { get; private set; }
     public double CurrentResult { get; private set; }
     public double CurrentIteration { get; private set; }
-    public double EndingTemperature { get; set; } = 0.1;
     public bool IsRunning { get; private set; }
-    public int StartingTemperature { get; set; } = 100;
     private List<(int Step, double X, double Value)> History { get; } = new();
 
-    public async Task StartSimulatedAnnealing()
+    public int StartingTemperature { get; set; } = 100;
+    public double EndingTemperature { get; set; } = 0.1;
+
+    public async Task Start()
     {
         IsRunning = true;
-        var simulatedAnnealingEngine = new SimulatedAnnealingEngine(CurrentExample.Function, StartingTemperature, EndingTemperature,
-            minimumSolutionRange: CurrentExample.Min, maximumSolutionRange: CurrentExample.Max);
         History.Clear();
 
-        await PerformAlgorithmAsync(simulatedAnnealingEngine).ConfigureAwait(false);
+        await PerformAlgorithmAsync().ConfigureAwait(false);
     }
 
-    private async Task PerformAlgorithmAsync(SimulatedAnnealingEngine simulatedAnnealingEngine)
+    private async Task PerformAlgorithmAsync()
     {
+        var simulatedAnnealingEngine = new SimulatedAnnealingEngine(CurrentExample.Function, StartingTemperature, EndingTemperature,
+            minimumSolutionRange: CurrentExample.Min, maximumSolutionRange: CurrentExample.Max);
+
         var prevTemperature = 0.0;
         var i = 0;
         while (!simulatedAnnealingEngine.IsFinished)
@@ -40,7 +39,8 @@ public partial class SimulatedAnnealingPage
             {
                 if (Math.Abs(prevTemperature - simulatedAnnealingEngine.PositionProvider.WorkingTemperature) > 0.000001)
                 {
-                    prevTemperature = UpdateView(simulatedAnnealingEngine, i);
+                    prevTemperature = simulatedAnnealingEngine.PositionProvider.WorkingTemperature;
+                    UpdateView(simulatedAnnealingEngine, i);
                 }
                 await Task.Delay(1).ConfigureAwait(false);
             }
@@ -51,14 +51,12 @@ public partial class SimulatedAnnealingPage
         UpdateView(simulatedAnnealingEngine, i);
     }
 
-    private double UpdateView(SimulatedAnnealingEngine simulatedAnnealingEngine, int i)
+    private void UpdateView(SimulatedAnnealingEngine simulatedAnnealingEngine, int i)
     {
-        var prevTemperature = simulatedAnnealingEngine.PositionProvider.WorkingTemperature;
         CurrentResult = simulatedAnnealingEngine.Result;
         CurrentSolution = simulatedAnnealingEngine.CurrentSolution;
         History.Add((i, CurrentSolution, CurrentResult));
         CurrentIteration = i;
         InvokeAsync(StateHasChanged);
-        return prevTemperature;
     }
 }

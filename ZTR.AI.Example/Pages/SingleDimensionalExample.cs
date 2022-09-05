@@ -32,6 +32,10 @@ namespace ZTR.AI.Example.Pages
             Max = Math.PI * 1.1
         };
 
+        public static IReadOnlyCollection<SingleDimensionalExample> AllExamples { get; } = new[]
+        {
+            Sin, Cos,  ShortExponental,
+        };
 
         public string Name { get; init; } = string.Empty;
         public IEnumerable<DataItem> DrawingData =>

@@ -21,15 +21,14 @@
 </div>
 
 <div class="row">
-    <h1>@localizer["Common.SelectFunctionToOptimize"] <RadzenButton id="startButton" Text="Start" Click="() => StartSimulatedAnnealing()" /> </h1>
+    <h1>@localizer["Common.SelectFunctionToOptimize"] <RadzenButton id="startButton" Text="Start" Click="() => Start()" /> </h1>
     
     <div class="card">
         <RadzenDropDown TValue="SingleDimensionalExample" Data="@Examples" @bind-Value="CurrentExample" TextProperty="Name" />
         @localizer["Common.StartEncourage"]
     </div>
-    
 
-<RadzenChart>
+    <RadzenChart>
         <RadzenLineSeries Data="@CurrentExample.DrawingData" CategoryProperty="X" ValueProperty="Y">
             <RadzenChartTooltipOptions Visible="false" />
         </RadzenLineSeries>
