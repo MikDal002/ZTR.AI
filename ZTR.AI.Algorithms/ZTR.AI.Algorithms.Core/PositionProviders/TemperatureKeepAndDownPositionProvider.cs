@@ -1,7 +1,7 @@
 ﻿using System;
 using ZTR.AI.Common.Core.RandomEngines;
 
-namespace ZTR.AI.SimulatedAnnealing.Core;
+namespace ZTR.AI.Algorithms.Core.PositionProviders;
 
 /// <summary>
 /// This position provider is designed to be used with simulated annealing. It is
@@ -50,7 +50,7 @@ public class TemperatureKeepAndDownPositionProvider : ITemperatureBasedPositionP
 
     public double GetNextPosition(double currentSolution, double maximumSolutionRange, double minimumSolutionRange)
     {
-        var completelyRandomSolution = currentSolution + (_randomEngine.NextDoubleFromMinusOneToOne() * WorkingTemperature);
+        var completelyRandomSolution = currentSolution + _randomEngine.NextDoubleFromMinusOneToOne() * WorkingTemperature;
 
         if (_inTemperatureValue > StartingTemperature / WorkingTemperature)
         {

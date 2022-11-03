@@ -7,4 +7,4 @@ public interface IRandomEngine
     /// </summary>
     /// <returns></returns>
     double NextDouble();
-}
+} 

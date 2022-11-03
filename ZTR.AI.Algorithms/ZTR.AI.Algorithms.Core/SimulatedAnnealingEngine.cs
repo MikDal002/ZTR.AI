@@ -1,4 +1,5 @@
 ﻿using System;
+using ZTR.AI.Algorithms.Core.PositionProviders;
 using ZTR.AI.Common.Core.RandomEngines;
 
 namespace ZTR.AI.SimulatedAnnealing.Core
@@ -47,6 +48,7 @@ namespace ZTR.AI.SimulatedAnnealing.Core
         public double MaximumSolutionRange { get; }
         public bool IsFinished => PositionProvider.IsFinished;
         public double Result { get; private set; }
+        
         public void NextStep()
         {
             if (IsFinished) return;
