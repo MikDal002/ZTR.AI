@@ -2,10 +2,10 @@ using FluentAssertions;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using ZTR.AI.Algorithms.Core.PositionProviders;
 using ZTR.AI.Common.Core.RandomEngines;
 
 namespace ZTR.AI.SimulatedAnnealing.Core.Tests;
-
 
 public class TemperatureKeepAndDownPositionProviderTests
 {
