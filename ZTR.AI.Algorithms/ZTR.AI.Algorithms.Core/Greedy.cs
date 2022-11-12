@@ -36,6 +36,7 @@ public class GreedyEngine
     public GreedyEngine(Func<Vector<double>, double> functionToOptimize, Vector<double> minimumSolutionRange,
         Vector<double> maximumSolutionRange, long stepsToFinish = 1_000, IPositionProvider? provider = null, IRandomEngine? engine = null)
     {
+        minimumSolutionRange.MustBeTheSameCountAs(maximumSolutionRange, message: $"Size of {nameof(maximumSolutionRange)} must be the same as size of {nameof(minimumSolutionRange)}!");
         _stepsToFinish = stepsToFinish.MustBeGreaterThan(0);
 
         engine ??= new SystemRandomEngine();

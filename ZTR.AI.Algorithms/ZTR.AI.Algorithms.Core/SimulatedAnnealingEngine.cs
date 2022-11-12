@@ -2,6 +2,7 @@
 using Light.GuardClauses;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Complex;
+using ZTR.AI.Algorithms.Core;
 using ZTR.AI.Algorithms.Core.PositionProviders;
 using ZTR.AI.Common.Core.RandomEngines;
 
@@ -37,13 +38,13 @@ namespace ZTR.AI.SimulatedAnnealing.Core
             double endingTemperature = 0.1, Func<double, double>? temperatureDecreaser = null,
             IRandomEngine? randomEngine = null)
         {
-            if (temperature <= 0) throw new ArgumentOutOfRangeException(nameof(temperature));
+            temperature.MustBeGreaterThan(0);
+            minimumSolutionRange.MustBeTheSameCountAs(maximumSolutionRange,
+                message:
+                $"Size of {nameof(maximumSolutionRange)} must be the same as size of {nameof(minimumSolutionRange)}!");
+            
             minimumSolutionRange.MustNotBeNull();
             maximumSolutionRange.MustNotBeNull();
-            if (minimumSolutionRange.Count != maximumSolutionRange.Count)
-                throw new ArgumentException(
-                    $"Length of {nameof(minimumSolutionRange)} must be the same as length of {nameof(maximumSolutionRange)}");
-            
 
             _functionToOptimize = functionToOptimize;
             MinimumSolutionRange = minimumSolutionRange;

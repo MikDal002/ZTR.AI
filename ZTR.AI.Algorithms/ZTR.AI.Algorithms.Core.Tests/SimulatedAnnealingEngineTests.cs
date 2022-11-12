@@ -96,7 +96,7 @@ public class SimulatedAnnealingEngineTests
 
     [Test]
     [Ignore("Because it's remainder for the")]
-    public void SimulatedAnnealing_ShouldAutomaticallyCalculatePropsedTemperature()
+    public void SimulatedAnnealing_ShouldAutomaticallyCalculateProposedTemperature()
     {
         // Tutaj opis jak dobieraæ wartoœci https://youtu.be/gX-X85dCib0?t=1226
         // Slajd 15
