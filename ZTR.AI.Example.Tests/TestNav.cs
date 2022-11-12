@@ -1,19 +1,22 @@
+using System.Diagnostics;
 using AngleSharpWrappers;
 using Microsoft.AspNetCore.Components;
 using NSubstitute;
 using ZTR.AI.Example.Pages;
 
-namespace ZTR.AI.Example.Tests;
-
-internal class TestNav : NavigationManager
+namespace ZTR.AI.Example.Tests
 {
-    public TestNav()
-    {
-        Initialize("https://unit-test.example/", "https://unit-test.example/");
-    }
 
-    protected override void NavigateToCore(string uri, bool forceLoad)
+    internal class TestNav : NavigationManager
     {
-        NotifyLocationChanged(false);
+        public TestNav()
+        {
+            Initialize("https://unit-test.example/", "https://unit-test.example/");
+        }
+
+        protected override void NavigateToCore(string uri, bool forceLoad)
+        {
+            NotifyLocationChanged(false);
+        }
     }
 }

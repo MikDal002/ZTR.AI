@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using MathNet.Numerics.LinearAlgebra;
 using ZTR.AI.SimulatedAnnealing.Core;
 
 namespace ZTR.AI.Example.Pages;
@@ -8,11 +9,11 @@ public partial class SimulatedAnnealingPage
     public IReadOnlyCollection<SingleDimensionalExample> Examples { get; } = SingleDimensionalExample.AllExamples;
     public SingleDimensionalExample CurrentExample { get; private set; } = SingleDimensionalExample.Cos;
 
-    public double CurrentSolution { get; private set; }
+    public Vector<double>? CurrentSolution { get; private set; }
     public double CurrentResult { get; private set; }
     public double CurrentIteration { get; private set; }
     public bool IsRunning { get; private set; }
-    private List<(int Step, double X, double Value)> History { get; } = new();
+    private List<(int Step, Vector<double> X, double Value)> History { get; } = new();
 
     public int StartingTemperature { get; set; } = 100;
     public double EndingTemperature { get; set; } = 0.1;
@@ -27,8 +28,7 @@ public partial class SimulatedAnnealingPage
 
     private async Task PerformAlgorithmAsync()
     {
-        var simulatedAnnealingEngine = new SimulatedAnnealingEngine(CurrentExample.Function, StartingTemperature, EndingTemperature,
-            minimumSolutionRange: CurrentExample.Min, maximumSolutionRange: CurrentExample.Max);
+        var simulatedAnnealingEngine = new SimulatedAnnealingEngine(CurrentExample.Function, StartingTemperature, CurrentExample.Min, CurrentExample.Max, endingTemperature: EndingTemperature);
 
         var prevTemperature = 0.0;
         var i = 0;

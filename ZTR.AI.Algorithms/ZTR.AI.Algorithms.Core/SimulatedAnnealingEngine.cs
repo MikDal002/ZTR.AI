@@ -1,4 +1,7 @@
 ﻿using System;
+using Light.GuardClauses;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Complex;
 using ZTR.AI.Algorithms.Core.PositionProviders;
 using ZTR.AI.Common.Core.RandomEngines;
 
@@ -25,27 +28,36 @@ namespace ZTR.AI.SimulatedAnnealing.Core
     public class SimulatedAnnealingEngine
     {
         private readonly IRandomEngine _random;
-        private readonly Func<double, double> _functionToOptimize;
+        private readonly Func<Vector<double>, double> _functionToOptimize;
 
-        public SimulatedAnnealingEngine(Func<double, double> functionToOptimize, double temperature,
+        public ITemperatureBasedPositionProvider PositionProvider { get; }
+
+        public SimulatedAnnealingEngine(Func<Vector<double>, double> functionToOptimize, double temperature,
+            Vector<double> minimumSolutionRange, Vector<double> maximumSolutionRange,
             double endingTemperature = 0.1, Func<double, double>? temperatureDecreaser = null,
-            double minimumSolutionRange = double.NegativeInfinity, double maximumSolutionRange = double.PositiveInfinity,
             IRandomEngine? randomEngine = null)
         {
             if (temperature <= 0) throw new ArgumentOutOfRangeException(nameof(temperature));
+            minimumSolutionRange.MustNotBeNull();
+            maximumSolutionRange.MustNotBeNull();
+            if (minimumSolutionRange.Count != maximumSolutionRange.Count)
+                throw new ArgumentException(
+                    $"Length of {nameof(minimumSolutionRange)} must be the same as length of {nameof(maximumSolutionRange)}");
+            
+
             _functionToOptimize = functionToOptimize;
             MinimumSolutionRange = minimumSolutionRange;
             MaximumSolutionRange = maximumSolutionRange;
             _random = randomEngine ?? RandomEngine.Default;
-            CurrentSolution = 0.0;
+            CurrentSolution = Vector<double>.Build.Dense(minimumSolutionRange.Count, 0.0);
+
             Result = double.PositiveInfinity;
             PositionProvider = new TemperatureKeepAndDownPositionProvider(temperature, endingTemperature, _random, temperatureDecreaser);
         }
 
-        public ITemperatureBasedPositionProvider PositionProvider { get; }
-        public double CurrentSolution { get; private set; }
-        public double MinimumSolutionRange { get; }
-        public double MaximumSolutionRange { get; }
+        public Vector<double> CurrentSolution { get; private set; }
+        public Vector<double> MinimumSolutionRange { get; }
+        public Vector<double> MaximumSolutionRange { get; }
         public bool IsFinished => PositionProvider.IsFinished;
         public double Result { get; private set; }
         
@@ -69,7 +81,7 @@ namespace ZTR.AI.SimulatedAnnealing.Core
             }
         }
 
-        private void SetNewResult(double proposedResult, double proposedPosition)
+        private void SetNewResult(double proposedResult, Vector<double> proposedPosition)
         {
             Result = proposedResult;
             CurrentSolution = proposedPosition;
