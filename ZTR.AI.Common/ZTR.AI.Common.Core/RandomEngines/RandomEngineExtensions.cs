@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
+using ZTR.AI.Algorithms.Core;
 
 namespace ZTR.AI.Common.Core.RandomEngines;
 
@@ -21,9 +22,9 @@ public static class RandomEngineExtensions
     public static Vector<double> NextVectorFromRange([NotNull] this IRandomEngine randomEngine, [NotNull] Vector<double> minVector,
         [NotNull] Vector<double> maxVector)
     {
-        var count = minVector.Count;
-        if (count != maxVector.Count) throw new ArgumentException("Vectors must be equal");
+        minVector.MustBeTheSameCountAs(maxVector);
 
+        var count = minVector.Count;
         var vectorInternal = new double[count];
         for (var i = 0; i < count; i++)
         {

@@ -35,7 +35,7 @@ namespace ZTR.AI.Example.Pages
 
         public string Name { get; init; } = string.Empty;
         public IEnumerable<DataItem> DrawingData =>
-            MyMoreLinq.Range(Min[0], Max[0], Step).Select(d => new DataItem(d, Function(Vector.Build.Dense(1, d))));
+            MyLinq.Range(Min[0], Max[0], Step).Select(d => new DataItem(d, Function(Vector.Build.Dense(1, d))));
 
         public Func<Vector<double>, double> Function { get; init; } = _ =>  0.0;
         public double Step { get; init; } = 0.1;
