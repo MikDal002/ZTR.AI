@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Versioning;
+using Light.GuardClauses;
+using MathNet.Numerics.LinearAlgebra;
 using ZTR.AI.Common.Core.RandomEngines;
 
 namespace ZTR.AI.Algorithms.Core.PositionProviders;
@@ -48,9 +52,13 @@ public class TemperatureKeepAndDownPositionProvider : ITemperatureBasedPositionP
 
     public bool IsFinished => WorkingTemperature <= EndingTemperature;
 
-    public double GetNextPosition(double currentSolution, double maximumSolutionRange, double minimumSolutionRange)
+    public Vector<double> GetNextPosition([NotNull] Vector<double> currentSolution, [NotNull] Vector<double> maximumSolutionRange, [NotNull] Vector<double> minimumSolutionRange)
     {
-        var completelyRandomSolution = currentSolution + _randomEngine.NextDoubleFromMinusOneToOne() * WorkingTemperature;
+        minimumSolutionRange.MustNotBeNull();
+        maximumSolutionRange.MustNotBeNull();
+        currentSolution.MustNotBeNull();
+
+        var completelyRandomSolution = currentSolution + (_randomEngine.NextDoubleFromMinusOneToOne() * WorkingTemperature);
 
         if (_inTemperatureValue > StartingTemperature / WorkingTemperature)
         {
@@ -62,14 +70,17 @@ public class TemperatureKeepAndDownPositionProvider : ITemperatureBasedPositionP
             _inTemperatureValue++;
         }
 
-        if (completelyRandomSolution < minimumSolutionRange)
+        for (int i = 0; i < completelyRandomSolution.Count; ++i)
         {
-            return minimumSolutionRange;
-        }
+            if (completelyRandomSolution[i] < minimumSolutionRange[i])
+            {
+                completelyRandomSolution[i] = minimumSolutionRange[i];
+            }
 
-        if (completelyRandomSolution > maximumSolutionRange)
-        {
-            return maximumSolutionRange;
+            if (completelyRandomSolution[i] > maximumSolutionRange[i])
+            {
+                completelyRandomSolution[i] = maximumSolutionRange[i];
+            }
         }
 
         return completelyRandomSolution;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ZTR.AI.Example.Linq;
 
-public static class MyMoreLinq
+public static class MyLinq
 {
     public static IEnumerable<double> Range(double start, double stop, double step)
     {

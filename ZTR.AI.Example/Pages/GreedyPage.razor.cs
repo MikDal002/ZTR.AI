@@ -1,3 +1,5 @@
+using Light.GuardClauses;
+using Microsoft.VisualBasic;
 using ZTR.AI.Algorithms.Core;
 
 namespace ZTR.AI.Example.Pages;
@@ -8,23 +10,19 @@ public partial class GreedyPage
     public IReadOnlyCollection<SingleDimensionalExample> Examples { get; } = SingleDimensionalExample.AllExamples;
     public SingleDimensionalExample CurrentExample { get; private set; } = SingleDimensionalExample.Cos;
 
-    public double CurrentSolution { get; private set; }
-    public double CurrentResult { get; private set; }
-    public double CurrentIteration { get; private set; }
-    public bool IsRunning { get; private set; }
-    private List<(int Step, double X, double Value)> History { get; } = new();
+    public ExampleHistory? History { get; private set; }
 
     public async Task Start()
     {
-        IsRunning = true;
-        History.Clear();
+        History = new ExampleHistory();
+        History.Start();
 
         await PerformAlgorithm().ConfigureAwait(false);
     }
 
     private async Task PerformAlgorithm()
     {
-        var greedyEngine = new GreedyEngineForSingleDimensional(CurrentExample.Function, minimumSolutionRange: CurrentExample.Min, maximumSolutionRange: CurrentExample.Max);
+        var greedyEngine = new GreedyEngine(CurrentExample.Function, minimumSolutionRange: CurrentExample.Min, maximumSolutionRange: CurrentExample.Max);
 
         var i = 0;
         while (!greedyEngine.IsFinished)
@@ -40,16 +38,13 @@ public partial class GreedyPage
             i++;
         }
 
-        IsRunning = false;
+        History?.Stop();
         UpdateView(greedyEngine, i);
     }
 
-    private void UpdateView(GreedyEngineForSingleDimensional greedyEngine, int i)
+    private void UpdateView(GreedyEngine greedyEngine, int i)
     {
-        CurrentResult = greedyEngine.Result;
-        CurrentSolution = greedyEngine.CurrentSolution;
-        History.Add((i, CurrentSolution, CurrentResult));
-        CurrentIteration = i;
+        History!.Update(greedyEngine.Result, greedyEngine.CurrentSolution, i);
         InvokeAsync(StateHasChanged);
     }
 }

@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Light.GuardClauses;
+using MathNet.Numerics.LinearAlgebra;
 using ZTR.AI.Algorithms.Core.PositionProviders;
 using ZTR.AI.Common.Core.RandomEngines;
 using ZTR.AI.SimulatedAnnealing.Core;
 
 namespace ZTR.AI.Algorithms.Core;
 
-public class GreedyEngineForSingleDimensional
+public class GreedyEngine
 {
     private readonly IPositionProvider _provider;
     private long _stepsToFinish;
 
-    public double CurrentSolution { get; private set; }
-    public Func<double, double> FunctionToOptimize { get; }
-    public double MinimumSolutionRange { get; }
-    public double MaximumSolutionRange { get; }
+    public Vector<double> CurrentSolution { get; private set; }
+    public Func<Vector<double>, double> FunctionToOptimize { get; }
+    public Vector<double> MinimumSolutionRange { get; }
+    public Vector<double> MaximumSolutionRange { get; }
     public double Result { get; private set; }
     public bool IsFinished => _stepsToFinish <= 0;
 
@@ -31,9 +33,10 @@ public class GreedyEngineForSingleDimensional
     /// <param name="stepsToFinish">Steps to finish defines how long greedy algorithms will search for the best solution. It is decreased after every test of new solution.</param>
     /// <param name="provider"></param>
     /// <param name="engine">Will be used to generate starting position and will be provided to new Position Provider if it is null.</param>
-    public GreedyEngineForSingleDimensional(Func<double, double> functionToOptimize, double minimumSolutionRange = double.NegativeInfinity,
-        double maximumSolutionRange = double.PositiveInfinity, long stepsToFinish = 1_000, IPositionProvider? provider = null, IRandomEngine? engine = null)
+    public GreedyEngine(Func<Vector<double>, double> functionToOptimize, Vector<double> minimumSolutionRange,
+        Vector<double> maximumSolutionRange, long stepsToFinish = 1_000, IPositionProvider? provider = null, IRandomEngine? engine = null)
     {
+        minimumSolutionRange.MustBeTheSameCountAs(maximumSolutionRange, message: $"Size of {nameof(maximumSolutionRange)} must be the same as size of {nameof(minimumSolutionRange)}!");
         _stepsToFinish = stepsToFinish.MustBeGreaterThan(0);
 
         engine ??= new SystemRandomEngine();
@@ -43,7 +46,7 @@ public class GreedyEngineForSingleDimensional
         MinimumSolutionRange = minimumSolutionRange;
         MaximumSolutionRange = maximumSolutionRange;
 
-        CurrentSolution = engine.NextDoubleFromRange(MinimumSolutionRange, MaximumSolutionRange);
+        CurrentSolution = engine.NextVectorFromRange(MinimumSolutionRange, MaximumSolutionRange);
         Result = FunctionToOptimize(CurrentSolution);
     }
 
@@ -63,4 +66,3 @@ public class GreedyEngineForSingleDimensional
         _stepsToFinish -= 1;
     }
 }
-

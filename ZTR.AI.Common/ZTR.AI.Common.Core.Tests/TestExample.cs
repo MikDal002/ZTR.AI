@@ -4,10 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
+using MathNet.Numerics.LinearAlgebra.Double;
 using NUnit.Framework;
+using ZTR.AI.Algorithms.Core;
 using ZTR.AI.Common.Core.RandomEngines;
 
 namespace ZTR.AI.Common.Core.Tests;
+
+public class CollectionAssertionsExtensionsTests
+{
+    [Test]
+    public void VectorMustBeTheSameCountAs_ThrowArgumentException_WhenCountDiffers()
+    {
+        var vector1 = Vector.Build.Dense(1, 1);
+        var vector2 = Vector.Build.Dense(2, 1);
+
+        var action = () => vector1.MustBeTheSameCountAs(vector2);
+        action.Should().Throw<ArgumentException>();
+    }
+
+    [Test]
+    public void VectorMustBeTheSameCountAs_ReturnsFirstParameter_WhenCountIsTheSame()
+    {
+        var vector1 = Vector.Build.Dense(1, 1);
+        var vector2 = Vector.Build.Dense(1, 2);
+
+        var result = vector1.MustBeTheSameCountAs(vector2);
+        result.Should().BeSameAs(vector1);
+    }
+}
 
 public class NextDoubleFromRangeTests
 {

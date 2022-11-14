@@ -38,35 +38,35 @@
 
 </div>
 
-@if (History.Any())
+@if (History != null)
 {
     <div class="row">
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">
-                    @if (!IsRunning)
+                    @if (!History.IsRunning)
                     {
-                        @string.Format(localizer["Common.BestResult"], CurrentIteration)
+                        @string.Format(localizer["Common.BestResult"], History.CurrentIteration)
                     }
                     else
                     {
-                        @string.Format(localizer["Common.CurrentResult"], CurrentIteration)
+                        @string.Format(localizer["Common.CurrentResult"], History.CurrentIteration)
                     }
                 </h5>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                    @string.Format(localizer["Common.CurrentBestSolution"], CurrentSolution) <br />
+                    @string.Format(localizer["Common.CurrentBestSolution"], History.CurrentSolution.ElementAt(0)) <br />
                 </li>
                 <li class="list-group-item">
-                    @string.Format(localizer["Common.CurrentBestResult"], CurrentResult)
+                    @string.Format(localizer["Common.CurrentBestResult"], History.CurrentResult)
                 </li>
             </ul>
 
         </div>
     </div>
 
-    @if (IsRunning)
+    @if (History.IsRunning)
     {
         <div class="progress my-3">
             <div class="progress-bar progress-bar-striped progress-bar-animated" 
@@ -87,11 +87,11 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach (var hist in History)
+            @foreach (var hist in History.IterationResults)
             {
                 <tr>
                     <td>@hist.Step</td>
-                    <td>@hist.X.ToString("F5")</td>
+                    <td>@hist.X[0].ToString("F5")</td>
                     <td>@hist.Value.ToString("F5")</td>
                 </tr>
             }

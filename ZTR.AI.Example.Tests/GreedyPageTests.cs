@@ -40,7 +40,7 @@ namespace ZTR.AI.Example.Tests
             buttonElement.Click();
 
             // Assert
-            _cut.Instance.IsRunning.Should().BeTrue();
+            _cut.Instance!.History.IsRunning.Should().BeTrue();
         }
 
         [Test]
@@ -48,10 +48,10 @@ namespace ZTR.AI.Example.Tests
         {
             // Act
             await _cut.InvokeAsync(() => _cut.Instance.Start());
-            _cut.WaitForState(() => _cut.Instance.IsRunning == false, TimeSpan.FromSeconds(10));
+            _cut.WaitForState(() => _cut.Instance!.History.IsRunning == false, TimeSpan.FromSeconds(10));
 
             // Assert
-            _cut.Instance.IsRunning.Should().BeFalse();
+            _cut.Instance!.History.IsRunning.Should().BeFalse();
         }
     }
 }

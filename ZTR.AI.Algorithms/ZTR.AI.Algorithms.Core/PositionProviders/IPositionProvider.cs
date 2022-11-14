@@ -1,7 +1,9 @@
-﻿namespace ZTR.AI.Algorithms.Core.PositionProviders
+﻿using MathNet.Numerics.LinearAlgebra;
+
+namespace ZTR.AI.Algorithms.Core.PositionProviders
 {
     public interface IPositionProvider
     {
-        double GetNextPosition(double currentSolution, double maximumSolutionRange, double minimumSolutionRange);
+        Vector<double> GetNextPosition(Vector<double> currentSolution, Vector<double> maximumSolutionRange, Vector<double> minimumSolutionRange);
     }
 }

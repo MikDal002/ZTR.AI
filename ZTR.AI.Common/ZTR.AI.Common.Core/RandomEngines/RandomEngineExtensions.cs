@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
+using ZTR.AI.Algorithms.Core;
 
 namespace ZTR.AI.Common.Core.RandomEngines;
 
@@ -14,6 +17,22 @@ public static class RandomEngineExtensions
     public static double NextDoubleFromMinusOneToOne([NotNull] this IRandomEngine random)
     {
         return random.NextDouble() * 2.0 - 1.0;
+    }
+
+    public static Vector<double> NextVectorFromRange([NotNull] this IRandomEngine randomEngine, [NotNull] Vector<double> minVector,
+        [NotNull] Vector<double> maxVector)
+    {
+        minVector.MustBeTheSameCountAs(maxVector);
+
+        var count = minVector.Count;
+        var vectorInternal = new double[count];
+        for (var i = 0; i < count; i++)
+        {
+            vectorInternal[i] = randomEngine.NextDoubleFromRange(minVector[i], maxVector[i]);
+        }
+
+        return Vector.Build.Dense(vectorInternal);
+
     }
 
     /// <summary>
