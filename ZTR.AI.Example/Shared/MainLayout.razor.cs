@@ -3,7 +3,6 @@ using Microsoft.JSInterop;
 
 namespace ZTR.AI.Example.Shared;
 
-public record DataItem(double X, double Y);
 public partial class MainLayout
 {
     [Inject] private IJSRuntime JsRuntime { get; set; } = default!;

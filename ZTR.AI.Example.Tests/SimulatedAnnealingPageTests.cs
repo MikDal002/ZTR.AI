@@ -3,10 +3,31 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Radzen.Blazor.Rendering;
+using ZTR.AI.Example.Pages;
 using ZTR.AI.Example.Shared.ResourceFiles;
 using TestContext = Bunit.TestContext;
 
 namespace ZTR.AI.Example.Tests;
+
+public class EnumerableExtensionsTests
+{
+    [Test]
+    public void CartesianProductMakesCartesianProduct()
+    {
+        var input = new List<List<double>>
+        {
+            new List<double>() {1.0, 2.0},
+            new List<double>() {-1.0, -2.0}
+        };
+
+        var output = input.CreateCartesianProduct();
+
+        output.Should().BeEquivalentTo(new List<double[]>
+        {
+            new[] {1.0, -1.0}, new[] {1.0, -2.0}, new[] {2.0, -1.0}, new[] {2.0, -2.0}
+        });
+    }
+}
 
 public class SimulatedAnnealingPageTests
 {

@@ -7,8 +7,8 @@ namespace ZTR.AI.Example.Pages;
 public partial class GreedyPage
 {
 
-    public IReadOnlyCollection<SingleDimensionalExample> Examples { get; } = SingleDimensionalExample.AllExamples;
-    public SingleDimensionalExample CurrentExample { get; private set; } = SingleDimensionalExample.Cos;
+    public IReadOnlyCollection<TestFunction> Examples { get; } = TestFunction.AllExamples;
+    public TestFunction CurrentExample { get; private set; } = TestFunction.Cos;
 
     public ExampleHistory? History { get; private set; }
 

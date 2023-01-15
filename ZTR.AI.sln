@@ -30,6 +30,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZTR.AI.Algorithms.Core", "Z
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZTR.AI.Algorithms.Core.Tests", "ZTR.AI.Algorithms\ZTR.AI.Algorithms.Core.Tests\ZTR.AI.Algorithms.Core.Tests.csproj", "{C07ED7DE-66EB-43A4-B0F9-D1465019FC5B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZTR.AI.Researcher", "ZTR.AI.Researcher\ZTR.AI.Researcher.csproj", "{E4E29619-34AD-41C3-8182-4193E9F74D2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{C07ED7DE-66EB-43A4-B0F9-D1465019FC5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C07ED7DE-66EB-43A4-B0F9-D1465019FC5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C07ED7DE-66EB-43A4-B0F9-D1465019FC5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4E29619-34AD-41C3-8182-4193E9F74D2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4E29619-34AD-41C3-8182-4193E9F74D2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4E29619-34AD-41C3-8182-4193E9F74D2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4E29619-34AD-41C3-8182-4193E9F74D2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{9A49219D-B182-4E37-BAF5-ADE0ABFBFF05} = {0925E671-092E-41BC-B8BC-A0324D1DA55A}
 		{8C77E4B9-58C2-483D-A3DB-537DF5AC33CE} = {CB5FD7B6-A8C5-418E-8B58-751620C0A129}
 		{C07ED7DE-66EB-43A4-B0F9-D1465019FC5B} = {CB5FD7B6-A8C5-418E-8B58-751620C0A129}
+		{E4E29619-34AD-41C3-8182-4193E9F74D2B} = {0925E671-092E-41BC-B8BC-A0324D1DA55A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6FF48C4C-AD55-4540-9CA8-E972ADC601DB}

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ZTR.AI.Researcher": {
+      "commandName": "Project",
+      "commandLineArgs": "--name Miki"
+    }
+  }
+}
