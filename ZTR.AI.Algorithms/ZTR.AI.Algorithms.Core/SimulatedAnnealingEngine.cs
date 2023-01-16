@@ -33,12 +33,12 @@ namespace ZTR.AI.SimulatedAnnealing.Core
 
         public ITemperatureBasedPositionProvider PositionProvider { get; }
 
-        public SimulatedAnnealingEngine(Func<Vector<double>, double> functionToOptimize, double temperature,
+        public SimulatedAnnealingEngine(Func<Vector<double>, double> functionToOptimize, double startingTemperature,
             Vector<double> minimumSolutionRange, Vector<double> maximumSolutionRange,
             double endingTemperature = 0.1, Func<double, double>? temperatureDecreaser = null,
             IRandomEngine? randomEngine = null)
         {
-            temperature.MustBeGreaterThan(0);
+            startingTemperature.MustBeGreaterThan(0);
             minimumSolutionRange.MustBeTheSameCountAs(maximumSolutionRange,
                 message:
                 $"Size of {nameof(maximumSolutionRange)} must be the same as size of {nameof(minimumSolutionRange)}!");
@@ -53,7 +53,7 @@ namespace ZTR.AI.SimulatedAnnealing.Core
             CurrentSolution = Vector<double>.Build.Dense(minimumSolutionRange.Count, 0.0);
 
             Result = double.PositiveInfinity;
-            PositionProvider = new TemperatureKeepAndDownPositionProvider(temperature, endingTemperature, _random, temperatureDecreaser);
+            PositionProvider = new TemperatureKeepAndDownPositionProvider(startingTemperature, endingTemperature, _random, temperatureDecreaser);
         }
 
         public Vector<double> CurrentSolution { get; private set; }

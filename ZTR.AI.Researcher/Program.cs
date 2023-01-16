@@ -1,11 +1,11 @@
-﻿using System.CommandLine;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.NamingConventionBinder;
 using System.CommandLine.Parsing;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace ZT.AI.Researcher;
 
@@ -18,6 +18,10 @@ class Program
                 host.ConfigureServices(services =>
                 {
                     services.AddSingleton<IGreeter, Greeter>();
+                    services.AddTransient<ITester<GreedyOptions>, GreedyTester>();
+                    services.AddTransient<ITester<SimulatedAnnealingOptions>, SimulatedAnnealingTester>();
+                    services.AddTransient<TestFunctionProvider>();
+                    services.AddTransient(typeof(TesterExecutor<>));
                 });
             })
         .UseDefaults()
@@ -26,12 +30,53 @@ class Program
 
     private static CommandLineBuilder BuildCommandLine()
     {
+        var greedyCommand = new Command("Greedy", "Pozwala na testowanie algorytmu zachłannego")
+        {
+
+        };
+        greedyCommand.Handler = CommandHandler.Create<GreedyOptions, IHost>(((options, host) =>
+            host.Services.GetRequiredService<TesterExecutor<GreedyOptions>>().RunSuite(options)));
+
+        var simulatedAnnealingCommand = new Command("SA", "Pozwala na testowanie algorytmu symulowane wyżarzania")
+        {
+            new Option<double>("--StartingTemperature", "Określa startową temperaturę algorytmu")
+        };
+        simulatedAnnealingCommand.Handler = CommandHandler.Create<SimulatedAnnealingOptions, IHost>(((options, host) =>
+            host.Services.GetRequiredService<TesterExecutor<SimulatedAnnealingOptions>>().RunSuite(options)));
+
         var root = new RootCommand(@"$ dotnet run --name 'Joe'"){
             new Option<string>("--name"){
                 IsRequired = true
-            }
+            },
+
+            greedyCommand,
+            simulatedAnnealingCommand
         };
         root.Handler = CommandHandler.Create<GreeterOptions, IHost>(Run);
+        root.AddGlobalOption(new Option<FileInfo>("--Output", "Określa plik, do którego zostaną zapisane dane")
+        {
+            IsRequired = true
+        });
+
+        root.AddGlobalOption(new Option<int>("--Repeat", "Określa ile razy powtórzyć wykonania")
+        {
+            IsRequired = true
+        });
+        root.AddGlobalOption(new Option<int>("--StepsAtEnd", "Ilość kroków na końcu")
+        {
+            IsRequired = true
+        });
+
+        root.AddGlobalOption(new Option<int>("--StepsAtBeginning", "Ilość kroków na poczatku")
+        {
+            IsRequired = true
+        });
+        root.AddGlobalOption(new Option<TestFunction>("--TestFunction", "Funkcja, która zostanie poddana testom")
+        {
+            IsRequired = true
+        }
+        );
+
         return new CommandLineBuilder(root);
     }
 
@@ -45,27 +90,5 @@ class Program
         var name = options.Name;
         logger.LogInformation(HostingPlaygroundLogEvents.GreetEvent, "Greeting was requested for: {name}", name);
         greeter.Greet(name);
-    }
-}
-interface IGreeter
-{
-    void Greet(string name) => Console.WriteLine($"Hello, {name ?? "anonymous"}");
-}
-
-public class Greeter : IGreeter
-{
-
-}
-public class HostingPlaygroundLogEvents
-{
-    public const int GreetEvent = 1000;
-}
-public class GreeterOptions
-{
-    public string Name { get; }
-
-    public GreeterOptions(string name)
-    {
-        Name = name;
     }
 }

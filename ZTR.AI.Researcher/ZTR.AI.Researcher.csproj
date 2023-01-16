@@ -12,4 +12,8 @@
     <PackageReference Include="System.CommandLine.Rendering" Version="0.4.0-alpha.22272.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ZTR.AI.Algorithms\ZTR.AI.Algorithms.Core\ZTR.AI.Algorithms.Core.csproj" />
+  </ItemGroup>
+
 </Project>
