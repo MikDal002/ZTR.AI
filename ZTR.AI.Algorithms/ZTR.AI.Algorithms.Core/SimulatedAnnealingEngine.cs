@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Light.GuardClauses;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Complex;
@@ -88,4 +89,6 @@ namespace ZTR.AI.SimulatedAnnealing.Core
             CurrentSolution = proposedPosition;
         }
     }
+
+
 }

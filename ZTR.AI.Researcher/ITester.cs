@@ -1,7 +1,6 @@
-﻿namespace ZT.AI.Researcher
+﻿namespace ZT.AI.Researcher;
+
+public interface ITester<T> where T : IGlobalOptions
 {
-    public interface ITester<T> where T : IGlobalOptions
-    {
-        public void Run(T options);
-    }
+    public void Run(T options);
 }

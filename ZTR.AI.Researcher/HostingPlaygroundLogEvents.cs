@@ -1,7 +1,6 @@
-﻿namespace ZT.AI.Researcher
+﻿namespace ZT.AI.Researcher;
+
+public class HostingPlaygroundLogEvents
 {
-    public class HostingPlaygroundLogEvents
-    {
-        public const int GreetEvent = 1000;
-    }
+    public const int GreetEvent = 1000;
 }

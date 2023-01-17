@@ -1,7 +1,6 @@
-﻿namespace ZT.AI.Researcher
+﻿namespace ZT.AI.Researcher;
+
+interface IGreeter
 {
-    interface IGreeter
-    {
-        void Greet(string name) => Console.WriteLine($"Hello, {name ?? "anonymous"}");
-    }
+    void Greet(string name) => Console.WriteLine($"Hello, {name ?? "anonymous"}");
 }

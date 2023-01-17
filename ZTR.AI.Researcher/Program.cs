@@ -6,6 +6,9 @@ using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.NamingConventionBinder;
 using System.CommandLine.Parsing;
+using ZTR.AI.Researcher.Greedy;
+using ZTR.AI.Researcher.SimulatedAnnealing;
+using ZTR.AI.Researcher.Tabu;
 
 namespace ZT.AI.Researcher;
 
@@ -17,9 +20,9 @@ class Program
             {
                 host.ConfigureServices(services =>
                 {
-                    services.AddSingleton<IGreeter, Greeter>();
                     services.AddTransient<ITester<GreedyOptions>, GreedyTester>();
                     services.AddTransient<ITester<SimulatedAnnealingOptions>, SimulatedAnnealingTester>();
+                    services.AddTransient<ITester<TabuOptions>, TabuTester>();
                     services.AddTransient<TestFunctionProvider>();
                     services.AddTransient(typeof(TesterExecutor<>));
                 });
@@ -30,29 +33,12 @@ class Program
 
     private static CommandLineBuilder BuildCommandLine()
     {
-        var greedyCommand = new Command("Greedy", "Pozwala na testowanie algorytmu zachłannego")
-        {
+        var root = new RootCommand(@"$ dotnet run --name 'Joe'");
 
-        };
-        greedyCommand.Handler = CommandHandler.Create<GreedyOptions, IHost>(((options, host) =>
-            host.Services.GetRequiredService<TesterExecutor<GreedyOptions>>().RunSuite(options)));
+        root.AddTabuAlgorithm();
+        root.AddGreedyAlgorithm();
+        root.AddSimulatedAnnealingAlgorithm();
 
-        var simulatedAnnealingCommand = new Command("SA", "Pozwala na testowanie algorytmu symulowane wyżarzania")
-        {
-            new Option<double>("--StartingTemperature", "Określa startową temperaturę algorytmu")
-        };
-        simulatedAnnealingCommand.Handler = CommandHandler.Create<SimulatedAnnealingOptions, IHost>(((options, host) =>
-            host.Services.GetRequiredService<TesterExecutor<SimulatedAnnealingOptions>>().RunSuite(options)));
-
-        var root = new RootCommand(@"$ dotnet run --name 'Joe'"){
-            new Option<string>("--name"){
-                IsRequired = true
-            },
-
-            greedyCommand,
-            simulatedAnnealingCommand
-        };
-        root.Handler = CommandHandler.Create<GreeterOptions, IHost>(Run);
         root.AddGlobalOption(new Option<FileInfo>("--Output", "Określa plik, do którego zostaną zapisane dane")
         {
             IsRequired = true
@@ -78,17 +64,5 @@ class Program
         );
 
         return new CommandLineBuilder(root);
-    }
-
-    private static void Run(GreeterOptions options, IHost host)
-    {
-        var serviceProvider = host.Services;
-        var greeter = serviceProvider.GetRequiredService<IGreeter>();
-        var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
-        var logger = loggerFactory.CreateLogger(typeof(Program));
-
-        var name = options.Name;
-        logger.LogInformation(HostingPlaygroundLogEvents.GreetEvent, "Greeting was requested for: {name}", name);
-        greeter.Greet(name);
     }
 }
