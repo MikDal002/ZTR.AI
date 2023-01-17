@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using ZT.AI.Researcher;
-using ZTR.AI.SimulatedAnnealing.Core;
+using ZTR.AI.Algorithms.Core;
 
 namespace ZTR.AI.Researcher.SimulatedAnnealing;
 

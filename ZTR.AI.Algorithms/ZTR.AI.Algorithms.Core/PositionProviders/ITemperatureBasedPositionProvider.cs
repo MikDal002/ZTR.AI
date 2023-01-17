@@ -1,8 +1,7 @@
-﻿namespace ZTR.AI.Algorithms.Core.PositionProviders
+﻿namespace ZTR.AI.Algorithms.Core.PositionProviders;
+
+public interface ITemperatureBasedPositionProvider : IPositionProvider
 {
-    public interface ITemperatureBasedPositionProvider : IPositionProvider
-    {
-        double WorkingTemperature { get; }
-        bool IsFinished { get; }
-    }
+    double WorkingTemperature { get; }
+    bool IsFinished { get; }
 }

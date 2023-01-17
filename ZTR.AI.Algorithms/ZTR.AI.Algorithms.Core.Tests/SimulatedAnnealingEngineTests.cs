@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
+using ZTR.AI.Algorithms.Core;
 using ZTR.AI.Algorithms.Core.PositionProviders;
 using ZTR.AI.Common.Core.RandomEngines;
 

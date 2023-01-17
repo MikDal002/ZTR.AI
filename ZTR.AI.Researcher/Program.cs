@@ -6,6 +6,7 @@ using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.NamingConventionBinder;
 using System.CommandLine.Parsing;
+using ZTR.AI.Researcher.GA;
 using ZTR.AI.Researcher.Greedy;
 using ZTR.AI.Researcher.SimulatedAnnealing;
 using ZTR.AI.Researcher.Tabu;
@@ -23,6 +24,7 @@ class Program
                     services.AddTransient<ITester<GreedyOptions>, GreedyTester>();
                     services.AddTransient<ITester<SimulatedAnnealingOptions>, SimulatedAnnealingTester>();
                     services.AddTransient<ITester<TabuOptions>, TabuTester>();
+                    services.AddTransient<ITester<GenethicsAlgorithmsOptions>, GenethicsAlgorithmTester>();
                     services.AddTransient<TestFunctionProvider>();
                     services.AddTransient(typeof(TesterExecutor<>));
                 });
@@ -38,6 +40,7 @@ class Program
         root.AddTabuAlgorithm();
         root.AddGreedyAlgorithm();
         root.AddSimulatedAnnealingAlgorithm();
+        root.AddGenethicsAlgorithm();
 
         root.AddGlobalOption(new Option<FileInfo>("--Output", "Określa plik, do którego zostaną zapisane dane")
         {

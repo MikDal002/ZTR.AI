@@ -3,7 +3,7 @@ using Light.GuardClauses;
 using Plotly.Blazor;
 using Plotly.Blazor.Traces;
 using Plotly.Blazor.Traces.ScatterLib;
-using ZTR.AI.SimulatedAnnealing.Core;
+using ZTR.AI.Algorithms.Core;
 
 namespace ZTR.AI.Example.Pages;
 

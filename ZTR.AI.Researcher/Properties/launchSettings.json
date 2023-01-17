@@ -2,7 +2,7 @@
   "profiles": {
     "ZTR.AI.Researcher": {
       "commandName": "Project",
-      "commandLineArgs": "SA --TestFunction All --StepsAtEnd 2000 --StepsAtBeginning 2 --Repeat 1000 --Output SA.csv"
+      "commandLineArgs": "GA --TestFunction All --StepsAtEnd 2000 --StepsAtBeginning 2 --Repeat 1000 --Output GA.csv"
     }
   }
 }

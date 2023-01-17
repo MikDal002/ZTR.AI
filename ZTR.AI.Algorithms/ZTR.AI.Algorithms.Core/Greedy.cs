@@ -8,7 +8,6 @@ using Light.GuardClauses;
 using MathNet.Numerics.LinearAlgebra;
 using ZTR.AI.Algorithms.Core.PositionProviders;
 using ZTR.AI.Common.Core.RandomEngines;
-using ZTR.AI.SimulatedAnnealing.Core;
 
 namespace ZTR.AI.Algorithms.Core;
 
