@@ -42,7 +42,7 @@ public class GreedyEngine
         _provider = provider ?? new TemperatureKeepAndDownPositionProvider(100, 0.1, engine);
 
         FunctionToOptimize = functionToOptimize;
-        MinimumSolutionRange = minimumSolutionRange;
+        MinimumSolutionRange = minimumSolutionRange.MustBeTheSameCountAs(MaximumSolutionRange);
         MaximumSolutionRange = maximumSolutionRange;
 
         CurrentSolution = engine.NextVectorFromRange(MinimumSolutionRange, MaximumSolutionRange);

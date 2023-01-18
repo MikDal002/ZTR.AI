@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Light.GuardClauses;
 using ZTR.AI.Algorithms.Core.GeneticAlgorithm.Chromosomes;
 using ZTR.AI.Algorithms.Core.GeneticAlgorithm.Crossovers;
 using ZTR.AI.Algorithms.Core.GeneticAlgorithm.Mutations;
@@ -88,8 +86,8 @@ public class Population<T> : IPopulation<T> where T : IChromosome
             );
         }
 
-        //             for (int i = MinSize - chromosomesForPopulation.Count; i > 0; --i)
-        //                 chromosomesForPopulation.Add(_adamFactory.CreateNew());
+        for (int i = MinSize - chromosomesForPopulation.Count; i > 0; --i)
+            chromosomesForPopulation.Add(_adamFactory.CreateNew());
 
         //Debug.Assert(chromosomesForPopulation.Count >= MinSize);
         return _previousGeneration = new Generation<T>(chromosomesForPopulation);

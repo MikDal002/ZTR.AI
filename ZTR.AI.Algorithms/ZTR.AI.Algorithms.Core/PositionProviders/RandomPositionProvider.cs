@@ -17,7 +17,6 @@ public class RandomPositionProvider : IPositionProvider
     {
         minimumSolutionRange.MustNotBeNull();
         maximumSolutionRange.MustNotBeNull();
-        currentSolution.MustNotBeNull();
 
         return _randomEngine.NextVectorFromRange(minimumSolutionRange, maximumSolutionRange);
     }

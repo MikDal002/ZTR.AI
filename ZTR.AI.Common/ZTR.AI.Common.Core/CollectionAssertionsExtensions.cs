@@ -9,7 +9,8 @@ namespace ZTR.AI.Algorithms.Core
     public static class CollectionAssertionsExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T MustBeTheSameCountAs<T>(this T parameter, T other, [CallerArgumentExpression("parameter")] string? parameterName = null, string? message = null)
+        [return: NotNull]
+        public static T MustBeTheSameCountAs<T>([NotNull]  this T parameter, [NotNull] T other, [CallerArgumentExpression("parameter")] string? parameterName = null, string? message = null)
             where T : ICollection
         {
             if (parameter.Count != other.Count)
