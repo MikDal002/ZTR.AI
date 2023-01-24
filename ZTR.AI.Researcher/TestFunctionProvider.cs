@@ -10,14 +10,17 @@ public class TestFunctionProvider
         switch (functionToGet)
         {
             case TestFunction.Sum:
-                return (x => x.Sum(), -Vector.Build.Dense(2, 5.2), Vector.Build.Dense(2, 5.2));
+                return (x => x.Sum(),
+                    -Vector.Build.Dense(2, 5.2), Vector.Build.Dense(2, 5.2));
             case TestFunction.Step:
-                return (x => Math.Floor(x[0]) + Math.Floor(x[1]) , -Vector.Build.Dense(2, 5.2), Vector.Build.Dense(2, 5.2));
+                return (x => Math.Floor(x[0]) + Math.Floor(x[1]), 
+                    -Vector.Build.Dense(2, 5.2), Vector.Build.Dense(2, 5.2));
             case TestFunction.Rosenbrock:
-                return (x => Math.Pow(1 - x[0],2) + 100 * Math.Pow(x[1] - Math.Pow(x[0], 2), 2), -Vector.Build.Dense(2, 5.2), Vector.Build.Dense(2, 5.2));
+                return (x => Math.Pow(1 - x[0], 2) + 100 * Math.Pow(x[1] - Math.Pow(x[0], 2), 2), 
+                    -Vector.Build.Dense(2, 5.2), Vector.Build.Dense(2, 5.2));
             case TestFunction.Rastrigin:
                 return (
-                    x => 20 + x.Sum(z => Math.Pow(z, 2) - 10 * Math.Cos(2 * Math.PI * z)), 
+                    x => 20 + x.Sum(z => Math.Pow(z, 2) - 10 * Math.Cos(2 * Math.PI * z)),
                     -Vector.Build.Dense(2, 5.2), Vector.Build.Dense(2, 5.2));
             case TestFunction.Schwefel:
                 return (

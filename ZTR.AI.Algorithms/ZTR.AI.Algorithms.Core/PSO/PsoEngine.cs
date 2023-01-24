@@ -10,14 +10,16 @@ namespace ZTR.AI.Algorithms.Core.PSO
 {
     public class PsoEngine
     {
+        private int _amountOfGenerations;
         private readonly IRandomEngine _randomEngine;
 
         private readonly IReadOnlyCollection<Particle> _particles;
         private readonly IPositionProvider _provider;
 
         public PsoEngine(Func<Vector<double>, double> functionToOptimize, Vector<double> minimumSolutionRange, Vector<double> maximumSolutionRange,
-            int amountOfParticles = 10, IPositionProvider? provider = null, IRandomEngine? randomEngine = null)
+            int amountOfParticles = 10, int amountOfGenerations = int.MaxValue, IPositionProvider? provider = null, IRandomEngine? randomEngine = null)
         {
+            _amountOfGenerations = amountOfGenerations;
             _randomEngine = randomEngine ?? new SystemRandomEngine();
             _provider = provider ?? new RandomPositionProvider(_randomEngine);
 
@@ -46,12 +48,13 @@ namespace ZTR.AI.Algorithms.Core.PSO
         public void NextStep()
         {
             var newGeneration = false;
-            ;
+            
             
             if (currentNumber >= _particles.Count)
             {
                 currentNumber = 0;
                 newGeneration = true;
+                --_amountOfGenerations;
             }
 
             var currentParticle = _particles.ElementAt(currentNumber++);
@@ -87,7 +90,7 @@ namespace ZTR.AI.Algorithms.Core.PSO
         public Vector<double> MinimumSolutionRange { get; }
         public Vector<double> MaximumSolutionRange { get; }
         public double Result { get; private set; } = Double.PositiveInfinity;
-        public bool IsFinished { get; }
+        public bool IsFinished => _amountOfGenerations > 0;
 
 
     }

@@ -28,6 +28,7 @@ class Program
                     services.AddTransient<ITester<TabuOptions>, TabuTester>();
                     services.AddTransient<ITester<GenethicsAlgorithmsOptions>, GenethicsAlgorithmTester>();
                     services.AddTransient<TestFunctionProvider>();
+                    services.AddSingleton<RawResultsHandler>();
                     services.AddTransient(typeof(TesterExecutor<>));
                 });
             })

@@ -11,5 +11,7 @@ public record GreedyOptions : IGlobalOptions
     public int StepsAtEnd { get; set; }
     public int StepsAtBeginning { get; set; }
     public TestFunction TestFunction { get; set; }
+    public string AlgorithmName { get; set; }
+
     #endregion
 }

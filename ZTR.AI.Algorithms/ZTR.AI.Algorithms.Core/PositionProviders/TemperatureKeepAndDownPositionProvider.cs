@@ -60,7 +60,7 @@ public class TemperatureKeepAndDownPositionProvider : ITemperatureBasedPositionP
 
         var completelyRandomSolution = currentSolution + (_randomEngine.NextDoubleFromMinusOneToOne() * WorkingTemperature);
 
-        if (_inTemperatureValue > StartingTemperature / WorkingTemperature)
+        if (_inTemperatureValue >= StartingTemperature / WorkingTemperature)
         {
             WorkingTemperature = TemperatureDecreaser(WorkingTemperature);
             _inTemperatureValue = 0;

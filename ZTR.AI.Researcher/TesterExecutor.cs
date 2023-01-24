@@ -17,6 +17,7 @@ public class TesterExecutor<T> where T : IGlobalOptions
     public void RunSuite(T options)
     {
         _logger.LogInformation("Start suite...");
+
         List<TestFunction> functionsToTest;
         if (options.TestFunction == TestFunction.All)
         {

@@ -8,7 +8,7 @@ public class SimulatedAnnealingTester : BaseTester<SimulatedAnnealingOptions>, I
 {
     private readonly TestFunctionProvider _testFunctionProvider;
 
-    public SimulatedAnnealingTester(TestFunctionProvider testFunctionProvider, ILogger<SimulatedAnnealingOptions> logger) : base(logger)
+    public SimulatedAnnealingTester(TestFunctionProvider testFunctionProvider, ILogger<SimulatedAnnealingOptions> logger, RawResultsHandler handler) : base(logger, handler)
     {
         _testFunctionProvider = testFunctionProvider;
     }

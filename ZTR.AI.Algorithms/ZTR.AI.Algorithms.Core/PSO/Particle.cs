@@ -7,16 +7,21 @@ namespace ZTR.AI.Algorithms.Core.PSO
     class Particle
     {
         private readonly Func<Vector<double>, double> _functionToOptimize;
-        private IRandomEngine _randomEngine;
+        private readonly IRandomEngine _randomEngine;
         private readonly Vector<double> _minimumSolutionRange;
         private readonly Vector<double> _maximumSolutionRange;
-        private double _jakieśW = 0.8;
-        private double _localModifier = 0.1;
-        private double _globalModifier = 0.1;
+        private readonly double _slowingFactor;
+        private readonly double _localPositionFactor;
+        private readonly double _globalPositionFactor;
 
-        public Particle(Func<Vector<double>, double> functionToOptimize, Vector<double> startingPosition, Vector<double> velocity, 
-            IRandomEngine randomEngine, Vector<double> minimumSolutionRange, Vector<double> maximumSolutionRange)
+        public Particle(Func<Vector<double>, double> functionToOptimize, Vector<double> startingPosition, 
+            Vector<double> velocity, 
+            IRandomEngine randomEngine, Vector<double> minimumSolutionRange, Vector<double> maximumSolutionRange,
+            double slowingFactor = 0.8, double localPositionFactor = 0.1, double globalPositionFactor = 0.1)
         {
+            _slowingFactor = slowingFactor;
+            _localPositionFactor = localPositionFactor;
+            _globalPositionFactor = globalPositionFactor;
             _functionToOptimize = functionToOptimize;
             this._randomEngine = randomEngine;
             _minimumSolutionRange = minimumSolutionRange;
@@ -44,9 +49,9 @@ namespace ZTR.AI.Algorithms.Core.PSO
             var localRandomModifier = _randomEngine.NextDouble();
             var globalRandomModifier = _randomEngine.NextDouble();
 
-            Velocity = _jakieśW * Velocity 
-                       + localRandomModifier * _localModifier * (BestKnownPositionByParticle - Position)
-                       + globalRandomModifier * _globalModifier + (bestGlobalKnownPosition - Position);
+            Velocity = _slowingFactor * Velocity 
+                       + localRandomModifier * _localPositionFactor * (BestKnownPositionByParticle - Position)
+                       + globalRandomModifier * _globalPositionFactor + (bestGlobalKnownPosition - Position);
 
             CalculateNewPosition();
         }

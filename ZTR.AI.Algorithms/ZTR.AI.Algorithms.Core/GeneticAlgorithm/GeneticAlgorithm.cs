@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ public class GeneticAlgorithm<T> : IGeneticAlgorithm where T : class, IChromosom
     }
 
 
-    public void Start()
+    public IEnumerable<double> Start()
     {
         do
         {
@@ -41,12 +42,13 @@ public class GeneticAlgorithm<T> : IGeneticAlgorithm where T : class, IChromosom
                 throw new ArgumentException("Generation must be bigger than zero!");
 
 
-            Parallel.ForEach(currentGeneration, chromosome =>
+            foreach(var chromosome in currentGeneration) 
             {
-                if (chromosome.Fitness != null) return;
+                if (chromosome.Fitness != null) continue;
                 chromosome.Fitness = Fitness.Evaluate(chromosome);
+                yield return chromosome.Fitness.Value;
                 if (chromosome.Fitness == null) throw new ArgumentException("Fitness must be bigger than zero!");
-            });
+            }
             currentGeneration.BestChromosome = currentGeneration.Max(d => d);
 
             if (BestChromosome == null) BestChromosome = currentGeneration.BestChromosome;

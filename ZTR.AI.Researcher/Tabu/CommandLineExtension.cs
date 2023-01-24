@@ -17,8 +17,11 @@ public static class CommandLineExtension
             new Option<double>("--ExplorationAmount", "Określa jak długo algorytm ma eksplorowac dane miejsce"),
             new Option<double>("--TabuListMax", "Określa długość listy tabu"),
         };
-        tabuCommand.Handler = CommandHandler.Create<TabuOptions, IHost>(((options, host) =>
-            host.Services.GetRequiredService<TesterExecutor<TabuOptions>>().RunSuite(options)));
+        tabuCommand.Handler = CommandHandler.Create<TabuOptions, IHost>((options, host) =>
+        {
+            options.AlgorithmName = "Tabu";
+            host.Services.GetRequiredService<TesterExecutor<TabuOptions>>().RunSuite(options);
+        });
 
         command.AddCommand(tabuCommand);
     }

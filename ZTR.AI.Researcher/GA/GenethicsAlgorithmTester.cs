@@ -18,7 +18,7 @@ public class GenethicsAlgorithmTester : BaseTester<GenethicsAlgorithmsOptions>, 
 {
     private readonly TestFunctionProvider _testFunctionProvider;
     private ILogger<GenethicsAlgorithmsOptions> _logger;
-    public GenethicsAlgorithmTester(TestFunctionProvider testFunctionProvider, ILogger<GenethicsAlgorithmsOptions> logger) : base(logger)
+    public GenethicsAlgorithmTester(TestFunctionProvider testFunctionProvider, ILogger<GenethicsAlgorithmsOptions> logger, RawResultsHandler handler) : base(logger, handler)
     {
         _testFunctionProvider = testFunctionProvider;
         _logger = logger;
@@ -49,7 +49,11 @@ public class GenethicsAlgorithmTester : BaseTester<GenethicsAlgorithmsOptions>, 
         ga.Termination = terminationFactory();
         //ga.GenerationHasGone += ((sender, generation) => _logger.LogDebug("Genration has gone!"));
         //_logger.LogInformation("GA running...");
-         ga.Start();
+        int stepsDone = 0;
+        foreach (var result in ga.Start())
+        {
+            if (stepsDone >= stepsToDo) break;
+        }
          //_logger.LogInformation("Best solution found has {0}.", ga.BestChromosome.Fitness);
 
          return (ga.BestChromosome!.Fitness!.Value, -1);

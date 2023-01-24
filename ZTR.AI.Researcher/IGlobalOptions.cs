@@ -7,4 +7,5 @@ public interface IGlobalOptions
     public int StepsAtEnd { get; set; }
     public int StepsAtBeginning { get; set; }
     public TestFunction TestFunction { get; set; }
+    string AlgorithmName { get; set; }
 }

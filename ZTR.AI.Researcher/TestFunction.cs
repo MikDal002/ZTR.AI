@@ -2,11 +2,11 @@
 
 public enum TestFunction
 {
-    Sum,
+    Rastrigin,
     Step,
     Rosenbrock,
-    Rastrigin,
     Schwefel,
     Easom,
-    All
+    All,
+    Sum,
 }

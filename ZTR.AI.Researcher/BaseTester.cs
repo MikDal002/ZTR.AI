@@ -6,31 +6,37 @@ namespace ZT.AI.Researcher;
 public abstract class BaseTester<T> where T : IGlobalOptions 
 {
     private readonly ILogger<T> _logger;
+    private readonly RawResultsHandler _handler;
 
-    protected BaseTester(ILogger<T> logger)
+    protected BaseTester(ILogger<T> logger, RawResultsHandler handler)
     {
         _logger = logger;
+        _handler = handler;
     }
 
     public void Run(T options)
     {
-        _logger.LogInformation("Started testing...");
         using var fileStream = File.OpenWrite(options.Output.FullName);
         using var writer = new StreamWriter(fileStream);
 
         int currentSteps = options.StepsAtBeginning;
 
-        writer.WriteLine($"Steps;Min;Max;Avg;StdDev;Count");
+        writer.WriteLine($"Steps;Avg;StdDev;Min;Max;Count");
 
         while (currentSteps < options.StepsAtEnd)
         {
-            MakeExamination(options, currentSteps, writer);
+            _logger.LogInformation($"Started testing for {currentSteps}...");
+
+            var results = MakeExamination(options, currentSteps, writer);
+            _handler.SaveResults(options, currentSteps, results);
+
             currentSteps *= 2;
         }
+
         _logger.LogInformation("Test finished...");
     }
 
-    private void MakeExamination(T options, int currentSteps, StreamWriter writer)
+    private IEnumerable<double> MakeExamination(T options, int currentSteps, StreamWriter writer)
     {
         List<double> results = new(options.Repeat);
 
@@ -41,11 +47,14 @@ public abstract class BaseTester<T> where T : IGlobalOptions
         }
 
         writer.WriteLine(
-            $"{currentSteps};{results.Min().ToString("F5")};" +
-            $"{results.Max().ToString("F5")};" +
+            $"{currentSteps};" +
             $"{results.Average().ToString("F5")};" +
             $"{results.StandardDeviation().ToString("F5")};" +
-            $"{results.Count}");
+            $"{results.Min().ToString("F5")};" +
+            $"{results.Max().ToString("F5")};" +
+            $"{results.Count}"
+            );
+        return results;
     }
 
     public abstract (double Result, int Steps) RunInternal(T options, int steps);

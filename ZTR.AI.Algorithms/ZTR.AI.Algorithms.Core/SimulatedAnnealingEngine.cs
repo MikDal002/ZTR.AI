@@ -50,7 +50,7 @@ public class SimulatedAnnealingEngine
         MinimumSolutionRange = minimumSolutionRange;
         MaximumSolutionRange = maximumSolutionRange;
         _random = randomEngine ?? RandomEngine.Default;
-        CurrentSolution = Vector<double>.Build.Dense(minimumSolutionRange.Count, 0.0);
+        CurrentSolution = _random.NextVectorFromRange(minimumSolutionRange, maximumSolutionRange);
 
         Result = double.PositiveInfinity;
         PositionProvider = new TemperatureKeepAndDownPositionProvider(startingTemperature, endingTemperature, _random, temperatureDecreaser);

@@ -2,7 +2,7 @@
   "profiles": {
     "ZTR.AI.Researcher": {
       "commandName": "Project",
-      "commandLineArgs": "PSO --TestFunction All --StepsAtEnd 2000 --StepsAtBeginning 2 --Repeat 1000 --Output PSO.csv"
+      "commandLineArgs": "Tabu --TestFunction All --StepsAtEnd 5000 --StepsAtBeginning 16 --Repeat 1000 --TabuRange 1,0 --Output Tabu-r1_0.csv"
     }
   }
 }

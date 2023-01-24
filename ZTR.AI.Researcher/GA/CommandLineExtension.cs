@@ -1,7 +1,7 @@
-﻿using System.CommandLine;
-using System.CommandLine.NamingConventionBinder;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.CommandLine;
+using System.CommandLine.NamingConventionBinder;
 using ZT.AI.Researcher;
 
 namespace ZTR.AI.Researcher.GA;
@@ -14,8 +14,11 @@ public static class CommandLineExtension
         {
 
         };
-        gaCommand.Handler = CommandHandler.Create<GenethicsAlgorithmsOptions, IHost>(((options, host) =>
-            host.Services.GetRequiredService<TesterExecutor<GenethicsAlgorithmsOptions>>().RunSuite(options)));
+        gaCommand.Handler = CommandHandler.Create<GenethicsAlgorithmsOptions, IHost>((options, host) =>
+            {
+                options.AlgorithmName = "GA";
+                host.Services.GetRequiredService<TesterExecutor<GenethicsAlgorithmsOptions>>().RunSuite(options);
+            });
 
         command.AddCommand(gaCommand);
     }

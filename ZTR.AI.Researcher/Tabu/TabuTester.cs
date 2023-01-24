@@ -9,7 +9,7 @@ public class TabuTester : BaseTester<TabuOptions>, ITester<TabuOptions>
 {
     private readonly TestFunctionProvider _testFunctionProvider;
 
-    public TabuTester(TestFunctionProvider testFunctionProvider, ILogger<TabuOptions> logger) : base(logger)
+    public TabuTester(TestFunctionProvider testFunctionProvider, ILogger<TabuOptions> logger, RawResultsHandler handler) : base(logger, handler)
     {
         _testFunctionProvider = testFunctionProvider;
     }

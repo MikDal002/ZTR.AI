@@ -30,7 +30,8 @@ public class TabuEngine
     public bool IsFinished => _restartsLeft <= 0;
 
     public TabuEngine(Func<Vector<double>, double> functionToOptimize, Vector<double> minimumSolutionRange,
-        Vector<double> maximumSolutionRange, Vector<double> rangeOfTabu, int restartsAmount = 100, int explorationAmount = 100, long tabuListMax = 10, IRandomEngine? engine = null)
+        Vector<double> maximumSolutionRange, Vector<double> rangeOfTabu, int restartsAmount = 1000, 
+        int explorationAmount = 100, long tabuListMax = 100, IRandomEngine? engine = null)
     {
         _functionToOptimize = functionToOptimize;
         _restartsLeft = restartsAmount;

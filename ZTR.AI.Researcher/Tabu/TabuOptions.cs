@@ -11,11 +11,12 @@ public record TabuOptions : IGlobalOptions
     public int StepsAtEnd { get; set; }
     public int StepsAtBeginning { get; set; }
     public TestFunction TestFunction { get; set; }
+    public string AlgorithmName { get; set; }
 
     #endregion
 
     public double TabuRange { get; set; } = 0.5;
-    public int RestartsAmount { get; set; } = 100;
+    public int RestartsAmount { get; set; } = int.MaxValue;
     public int ExplorationAmount { get; set; } = 100;
-    public int TabuListMax { get; set; } = 10;
+    public int TabuListMax { get; set; } = int.MaxValue;
 }

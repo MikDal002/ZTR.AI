@@ -11,7 +11,7 @@ public class ParticleSwarmOptimisationAlgorithmsTester : BaseTester<ParticleSwar
 {
     private readonly TestFunctionProvider _testFunctionProvider;
     private ILogger<ParticleSwarmOptimisationAlgorithmsOptions> _logger;
-    public ParticleSwarmOptimisationAlgorithmsTester(TestFunctionProvider testFunctionProvider, ILogger<ParticleSwarmOptimisationAlgorithmsOptions> logger) : base(logger)
+    public ParticleSwarmOptimisationAlgorithmsTester(TestFunctionProvider testFunctionProvider, ILogger<ParticleSwarmOptimisationAlgorithmsOptions> logger, RawResultsHandler handler) : base(logger, handler)
     {
         _testFunctionProvider = testFunctionProvider;
         _logger = logger;

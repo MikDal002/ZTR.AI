@@ -14,8 +14,11 @@ public static class CommandLineExtension
         {
             new Option<double>("--StartingTemperature", "Określa startową temperaturę algorytmu")
         };
-        simulatedAnnealingCommand.Handler = CommandHandler.Create<SimulatedAnnealingOptions, IHost>(((options, host) =>
-            host.Services.GetRequiredService<TesterExecutor<SimulatedAnnealingOptions>>().RunSuite(options)));
+        simulatedAnnealingCommand.Handler = CommandHandler.Create<SimulatedAnnealingOptions, IHost>((options, host) =>
+        {
+            options.AlgorithmName = "SA";
+            host.Services.GetRequiredService<TesterExecutor<SimulatedAnnealingOptions>>().RunSuite(options);
+        });
 
 
         command.AddCommand(simulatedAnnealingCommand);

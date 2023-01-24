@@ -9,7 +9,7 @@ public class GreedyTester : BaseTester<GreedyOptions>, ITester<GreedyOptions>
 {
     private readonly TestFunctionProvider _testFunctionProvider;
 
-    public GreedyTester(TestFunctionProvider testFunctionProvider, ILogger<GreedyOptions> logger) : base(logger)
+    public GreedyTester(TestFunctionProvider testFunctionProvider, ILogger<GreedyOptions> logger, RawResultsHandler handler) : base(logger, handler)
     {
         _testFunctionProvider = testFunctionProvider;
     }

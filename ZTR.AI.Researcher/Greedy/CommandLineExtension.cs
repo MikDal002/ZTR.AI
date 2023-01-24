@@ -14,8 +14,11 @@ public static class CommandLineExtension
         {
 
         };
-        greedyCommand.Handler = CommandHandler.Create<GreedyOptions, IHost>(((options, host) =>
-            host.Services.GetRequiredService<TesterExecutor<GreedyOptions>>().RunSuite(options)));
+        greedyCommand.Handler = CommandHandler.Create<GreedyOptions, IHost>((options, host) =>
+        {
+            options.AlgorithmName = "Greedy";
+            host.Services.GetRequiredService<TesterExecutor<GreedyOptions>>().RunSuite(options);
+        });
 
         command.AddCommand(greedyCommand);
     }
